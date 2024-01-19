@@ -26,6 +26,7 @@ const Form = ({ date, onClose, onAddEvent }) => {
       };
       onAddEvent(newEvent);
       onClose();
+      alert('Događaj je sačuvan!');
     } else {
       alert('Molimo popunite sva polja!');
     }
@@ -37,22 +38,22 @@ const Form = ({ date, onClose, onAddEvent }) => {
 
   return (
     <div className="form-container">
-      <h3>Dodaj dogadjaj na dan {formatDate(date)}</h3>
+      <h3>Dodaj događaj na dan {formatDate(date)}</h3>
       <div>
-        <label>Title:</label>
+        <label>Naziv:</label>
         <input type="text" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
       </div>
       <div>
-        <label>Time:</label>
+        <label>Vreme:</label>
         <input type="text" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
       </div>
       <div>
-        <label>Description:</label>
+        <label>Opis:</label>
         <textarea value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
       </div>
       <div className="form-buttons">
-        <button onClick={handleSave}>Save</button>
-        <button onClick={handleCancel}>Cancel</button>
+        <button onClick={handleSave}>Sačuvaj</button>
+        <button onClick={handleCancel}>Odustani</button>
       </div>
     </div>
   );

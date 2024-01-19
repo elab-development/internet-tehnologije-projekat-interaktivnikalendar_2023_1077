@@ -30,11 +30,11 @@ const Login = ({ onLogin }) => {
         </label>
         <br />
         <label>
-          Password: 
+          Lozinka: 
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
         <br />
-        <button type="button" onClick={handleLogin}>Login</button>
+        <button type="button" onClick={handleLogin}>Uloguj se</button>
         <br />
         <p onClick={handleForgotPassword} style={{ cursor: 'pointer', color: 'blue' }}>Zaboravljena lozinka?</p>
       </form>
