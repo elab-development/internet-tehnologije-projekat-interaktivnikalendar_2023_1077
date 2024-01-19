@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { GrCaretNext } from "react-icons/gr";
 import { GrCaretPrevious } from "react-icons/gr";
-//import './Calendar.css'; 
+import Form from './Form';
 
-const Calendar = () => {
+const Calendar = ({ onDateClick }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   const daysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -38,7 +39,10 @@ const Calendar = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    // Add your logic for handling date selection
+    setShowForm(true);
+    if (onDateClick) {
+      onDateClick(date);
+    }
   };
 
   const nextMonth = () => {
@@ -47,6 +51,14 @@ const Calendar = () => {
 
   const prevMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setSelectedDate(null);
+  };
+  const formatDate = (date, options) => {
+    return date.toLocaleString('default', options);
   };
 
   const monthData = getMonthData();
@@ -72,7 +84,7 @@ const Calendar = () => {
               {week.map((date, dateIndex) => (
                 <td
                   key={dateIndex}
-                  className={date ? (selectedDate && date.getTime() === selectedDate.getTime() ? 'selected' : '') : 'empty'}
+                  className={date ? (selectedDate && date.getTime() === selectedDate.getTime() ? 'selected-date' : '') : 'empty'}
                   onClick={() => date && handleDateClick(date)}
                 >
                   {date ? date.getDate() : ''}
@@ -82,6 +94,9 @@ const Calendar = () => {
           ))}
         </tbody>
       </table>
+      {showForm && (
+        <Form date={selectedDate} onClose={closeForm} />
+      )}
     </div>
   );
 };
