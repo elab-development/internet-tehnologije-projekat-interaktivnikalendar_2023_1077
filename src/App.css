@@ -28,3 +28,9 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+
+.selected-date{
+  background-color: #4caf50; 
+  color: #fff; 
+  border-radius: 50%;
+}
