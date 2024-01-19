@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { GrCaretNext } from "react-icons/gr";
-import { GrCaretPrevious } from "react-icons/gr";
+import { GrCaretNext } from 'react-icons/gr';
+import { GrCaretPrevious } from 'react-icons/gr';
 import Form from './Form';
 
 const Calendar = ({ onDateClick }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [events, setEvents] = useState([]);
 
   const daysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -45,6 +46,11 @@ const Calendar = ({ onDateClick }) => {
     }
   };
 
+  const addEvent = (description) => {
+    const newEvent = { date: selectedDate, description };
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
+  };
+
   const nextMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
   };
@@ -57,9 +63,8 @@ const Calendar = ({ onDateClick }) => {
     setShowForm(false);
     setSelectedDate(null);
   };
-  const formatDate = (date, options) => {
-    return date.toLocaleString('default', options);
-  };
+
+  
 
   const monthData = getMonthData();
 
@@ -87,7 +92,22 @@ const Calendar = ({ onDateClick }) => {
                   className={date ? (selectedDate && date.getTime() === selectedDate.getTime() ? 'selected-date' : '') : 'empty'}
                   onClick={() => date && handleDateClick(date)}
                 >
-                  {date ? date.getDate() : ''}
+                  {date ? (
+                    <div>
+                      <span>{date.getDate()}</span>
+                      <div className="events">
+                        {events
+                          .filter((event) => event.date.getTime() === date.getTime())
+                          .map((event, index) => (
+                            <div key={index} className="event">
+                              {event.description}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
                 </td>
               ))}
             </tr>
@@ -95,7 +115,7 @@ const Calendar = ({ onDateClick }) => {
         </tbody>
       </table>
       {showForm && (
-        <Form date={selectedDate} onClose={closeForm} />
+        <Form date={selectedDate} onClose={closeForm} onAddEvent={addEvent} />
       )}
     </div>
   );

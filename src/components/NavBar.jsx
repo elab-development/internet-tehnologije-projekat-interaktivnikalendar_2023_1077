@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-function NavBar() {
+function NavBar({ loggedInUser, onLogout }) {
   return (
-    <div className ="navBar">
-      <a>Interaktivni kalendar</a>
+    <div className="navBar">
+      <a href="/">Interaktivni kalendar</a>
+      {loggedInUser && (
+        <button onClick={onLogout}>Odjavi se</button>
+      )}
     </div>
-  )
+  );
 }
 
-export default NavBar
+export default NavBar;

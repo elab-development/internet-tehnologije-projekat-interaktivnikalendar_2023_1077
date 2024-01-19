@@ -10,6 +10,7 @@ function App() {
     console.log('Clicked on date:', date);
   };
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [events, setEvents] = useState([]);
 
   const handleLogin = (username) => {
     setLoggedInUser(username);};
@@ -17,6 +18,7 @@ function App() {
     const handleLogout = () => {
       setLoggedInUser(null);
     };
+
   return (
     <div className="App">
       <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />
