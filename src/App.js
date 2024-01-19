@@ -1,13 +1,15 @@
 import './App.css';
 import NavBar from './components/NavBar';
+import Calendar from './components/Calendar';
 
 function App() {
-  const prom= <h1>Cao svima</h1>;
+ const dugme= <button className="btn">Dodaj dogadjaj</button>;
   return (
     
     <div className="App">
      <NavBar></NavBar>
-     {prom}
+    {dugme}
+     <Calendar/>
      
     </div>
   );
