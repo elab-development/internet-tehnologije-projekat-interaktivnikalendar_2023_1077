@@ -13,16 +13,16 @@ const ForgotPassword = ({ onCancel }) => {
 
   return (
     <div>
-      <h2>Forgot Password</h2>
+      <h2>Zaboravljena lozinka</h2>
       <form>
         <label>
           Email:
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <br />
-        <button type="button" onClick={handleResetPassword}>Reset Password</button>
+        <button type="button" onClick={handleResetPassword}>Resetuj lozinku</button>
         <br />
-        <p onClick={onCancel} style={{ cursor: 'pointer', color: 'blue' }}>Cancel</p>
+        <p onClick={onCancel} style={{ cursor: 'pointer', color: 'blue' }}>Odustani</p>
       </form>
     </div>
   );

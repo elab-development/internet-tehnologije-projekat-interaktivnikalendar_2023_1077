@@ -13,6 +13,17 @@ const Calendar = ({ onDateClick }) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
+  const formatDate = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+
+    return `${formattedDay}/${formattedMonth}/${year}`;
+  };
+  
   const getMonthData = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -46,8 +57,8 @@ const Calendar = ({ onDateClick }) => {
     }
   };
 
-  const addEvent = (description) => {
-    const newEvent = { date: selectedDate, description };
+  const addEvent = (eventData) => {
+    const newEvent = {  ...eventData, date: selectedDate };
     setEvents((prevEvents) => [...prevEvents, newEvent]);
   };
 
@@ -100,7 +111,10 @@ const Calendar = ({ onDateClick }) => {
                           .filter((event) => event.date.getTime() === date.getTime())
                           .map((event, index) => (
                             <div key={index} className="event">
-                              {event.description}
+                                <div>Datum: {formatDate(event.date)}</div>
+                                <div>Naziv: {event.title}</div>
+                                <div>Vreme: {event.time}</div>
+                                <div>Opis: {event.description}</div>
                             </div>
                           ))}
                       </div>
