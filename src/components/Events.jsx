@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { useEventContext } from '../components/EventContext';
 
+const formatDate = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+
+    return `${formattedDay}/${formattedMonth}/${year}`;
+  };
 const Events = () => {
 const [exportedEvents, setExportedEvents] = useState([]);
   const { events } = useEventContext();
@@ -18,7 +28,7 @@ const [exportedEvents, setExportedEvents] = useState([]);
       <ul>
         {events.map((event, index) => (
           <li key={index}>
-            <div>Datum: {event.date.toLocaleDateString()}</div>
+            <div>Datum: {formatDate(event.date)}</div>
             <div>Naziv: {event.title}</div>
             <div>Vreme: {event.time}</div>
             <div>Opis: {event.description}</div>
