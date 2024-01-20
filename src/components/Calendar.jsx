@@ -23,7 +23,7 @@ const Calendar = ({ onDateClick }) => {
 
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
-  
+
   const getMonthData = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -106,18 +106,7 @@ const Calendar = ({ onDateClick }) => {
                   {date ? (
                     <div>
                       <span>{date.getDate()}</span>
-                      <div className="events">
-                        {events
-                          .filter((event) => event.date.getTime() === date.getTime())
-                          .map((event, index) => (
-                            <div key={index} className="event">
-                                <div>Datum: {formatDate(event.date)}</div>
-                                <div>Naziv: {event.title}</div>
-                                <div>Vreme: {event.time}</div>
-                                <div>Opis: {event.description}</div>
-                            </div>
-                          ))}
-                      </div>
+                      
                     </div>
                   ) : (
                     ''
