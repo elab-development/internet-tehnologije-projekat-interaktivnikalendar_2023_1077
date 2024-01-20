@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useEventContext } from '../components/EventContext';
 
-const Form = ({ date, onClose, onAddEvent }) => {
+const Form = ({ date, onClose}) => {
+  const { addEvent } = useEventContext();
   const [eventTitle, setEventTitle] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [eventDescription, setEventDescription] = useState('');
@@ -24,12 +26,15 @@ const Form = ({ date, onClose, onAddEvent }) => {
         time: eventTime,
         description: eventDescription,
       };
-      onAddEvent(newEvent);
+      addEvent(newEvent);
       onClose();
       alert('Događaj je sačuvan!');
     } else {
       alert('Molimo popunite sva polja!');
     }
+
+
+
   };
 
   const handleCancel = () => {
