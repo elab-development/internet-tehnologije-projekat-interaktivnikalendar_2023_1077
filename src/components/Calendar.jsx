@@ -13,17 +13,6 @@ const Calendar = ({ onDateClick }) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
-  const formatDate = (date) => {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
-
-    return `${formattedDay}/${formattedMonth}/${year}`;
-  };
-
   const getMonthData = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -80,7 +69,7 @@ const Calendar = ({ onDateClick }) => {
   const monthData = getMonthData();
 
   return (
-    <div className="calendar-container">
+    <div className="container">
       <div className="header">
         <button onClick={prevMonth}><GrCaretPrevious /></button>
         <h2>{currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>

@@ -17,12 +17,12 @@ const ForgotPassword = ({ onCancel }) => {
       <form>
         <label>
           Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input className='login-input' value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <br />
-        <button type="button" onClick={handleResetPassword}>Resetuj lozinku</button>
-        <br />
-        <p onClick={onCancel} style={{ cursor: 'pointer', color: 'blue' }}>Odustani</p>
+        <button className='login-button' onClick={handleResetPassword}>Resetuj lozinku</button>
+        <br /><br />
+        <p onClick={onCancel} style={{ cursor: 'pointer', color: '#30869e' }}>Odustani</p>
       </form>
     </div>
   );

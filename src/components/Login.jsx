@@ -21,22 +21,22 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div>
+    <div className='login-container'>
       <h2>Login</h2>
-      <form>
+      <form > 
         <label>
           Username: 
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input className='login-input' value={username} onChange={(e) => setUsername(e.target.value)} />
         </label>
         <br />
         <label>
           Lozinka: 
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input className='login-input' value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
         <br />
-        <button type="button" onClick={handleLogin}>Uloguj se</button>
-        <br />
-        <p onClick={handleForgotPassword} style={{ cursor: 'pointer', color: 'blue' }}>Zaboravljena lozinka?</p>
+        <button className='login-button' onClick={handleLogin}>Uloguj se</button>
+        <br /><br />
+        <p onClick={handleForgotPassword} style={{ cursor: 'pointer', color: '#30869e' }}>Zaboravljena lozinka?</p><br />
       </form>
       {showForgotPassword && <ForgotPassword onCancel={() => setShowForgotPassword(false)} />}
     </div>
