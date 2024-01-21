@@ -9,8 +9,9 @@
   min-height: 40px;
   padding-left: 25px;
   font-size: large;
-}
+  }
 
+  
 .btn {
   background-color: cornflowerblue;
   color: white;
@@ -28,9 +29,245 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+/*
+.container {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  width: 60%; 
+  text-align: center;
+  margin: 20px auto; 
+  transition: transform 0.3s ease-in-out;
+}
+.container:hover {
+  transform: scale(1.05);
+}
+*/
 
-.selected-date{
-  background-color: #4caf50; 
-  color: #fff; 
+.cal-buttons{
+  background-color: hwb(208 38% 2%);
+  cursor: pointer;
+  border-radius: 5px; 
+  align-items: center;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 9px;
+  padding: 0.7em 1.4em 0.7em 1.1em;
+  background: linear-gradient(0deg, rgb(20, 123, 167) 0%, rgb(102, 218, 247) 100%);
+}
+
+
+
+
+.calendar {
+  display: inline;
+  flex-direction: column;
+  align-items: center; 
+}
+
+li div {
+  margin-bottom: 10px; /* Prilagodi vrednost prema potrebi */
+}
+
+  
+
+
+
+.selected-date {
+  background-color: #4caf50;
+  color: #fff;
+  border-radius: 40%;
+  padding: 2px 3px; /* Dodato - povećava poluprečnik i poboljšava izgled */
+  font-weight: bold; /* Dodato - čini tekst na selektovanom datumu uočljivijim */
+  transition: background-color 0.3s, transform 0.3s, color 0.3s; /* Dodato - glatkiji prelaz između stanja */
+  cursor: pointer; /* Dodato - označava da je element interaktivan */
+}
+
+/* Dodato - efekat smanjenja prilikom hovera */
+.selected-date:hover {
+  transform: scale(0.95);
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f5f5f5;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/*.form-buttons,*/
+.login-button {
+  background-color: #282c34;
+  color: #fff;
+  padding: 15px 30px; /* Prilagodio sam padding kako bi bio ujednačen sa prethodnim stilom */
+  cursor: pointer;
+  border: none;
+  border-radius: 15px; /* Prilagodio sam border-radius kako bi bio ujednačen sa prethodnim stilom */
+  transition: background-color 0.3s;
+}
+/*.form-buttons:hover,*/
+.login-button:hover {
+  background-color: #61dafb;
+}
+/* Dodatni stil za dugmice u formi */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Dodat razmak između dugmica */
+}
+
+.form-buttons button {
+  background-color: #282c34;
+  color: #fff;
+  padding: 15px 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.form-buttons button:hover {
+  background-color: #61dafb;
+  transform: scale(1.05); /* Dodat efekat povećanja prilikom hover-a */
+}
+.container {
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 12px;
+  width: 20%; 
+  text-align: center;
+  margin: 20px auto; 
+  transition: transform 0.3s ease-in-out;
+}
+
+
+.container:hover {
+  transform: scale(1.05);
+}
+@media screen and (max-width: 768px) {
+  .container {
+    width: 80%; /* Na manjim ekranima smanji širinu kontejnera */
+  }
+}
+
+h2 {
+  color: #333333;
+}
+.navBar {
+  background-color: #282c34;
+  color: #61dafb;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.navBar a {
+  color: #61dafb;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.navBar a:hover {
+  color: #fff;
+}
+.selected-date {
+  background-color: #47a3a861;
+  transform: scale(1.1);
   border-radius: 50%;
+  transition: background-color 0.3s, transform 0.3s;
+  
+}
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+
+}
+.login-input {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  font-size: 16px;
+}
+.login-input:hover,
+.login-input:focus {
+  border-color: #61dafb;
+}
+.events {
+  margin-top: 40px;
+  background-color: #30869e;
+}
+
+.events {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.events-container {
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 12px;
+  width: 20%; 
+  text-align: center;
+  margin: 20px auto; 
+  transition: transform 0.3s ease-in-out;
+}
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  text-align:center;
+}
+.form-input {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.form-textarea {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.form-input {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  font-size: 16px;
+}
+.form-input:hover,
+.form-input:focus {
+  border-color: #61dafb;
 }

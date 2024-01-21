@@ -23,14 +23,15 @@ const [exportedEvents, setExportedEvents] = useState([]);
     console.log('Exported Events:', exportedEvents);
   };
   return (
-    <div>
-        <button onClick={handleExport}>Preuzmi podatke</button>
+    <div className='events-container'>
+        <button className='login-button' onClick={handleExport}>Preuzmi podatke</button>
       <ul>
         {events.map((event, index) => (
-          <li key={index}>
+          <li key={index} style={{ marginBottom: '5px' }}>
             <div>Datum: {formatDate(event.date)}</div>
-            <div>Naziv: {event.title}</div>
-            <div>Vreme: {event.time}</div>
+            
+            <div>Naziv: {event.title}</div>            
+            <div>Vreme: {event.time}</div> 
             <div>Opis: {event.description}</div>
           </li>
         ))}

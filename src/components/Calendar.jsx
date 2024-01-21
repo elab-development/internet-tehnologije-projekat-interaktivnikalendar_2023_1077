@@ -71,9 +71,9 @@ const Calendar = ({ onDateClick }) => {
   return (
     <div className="container">
       <div className="header">
-        <button onClick={prevMonth}><GrCaretPrevious /></button>
+        <button className='cal-buttons' onClick={prevMonth}><GrCaretPrevious /></button>
         <h2>{currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
-        <button onClick={nextMonth}><GrCaretNext /></button>
+        <button className='cal-buttons' onClick={nextMonth}><GrCaretNext /></button>
       </div>
       <table className="calendar">
         <thead>
