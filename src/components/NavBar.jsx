@@ -5,11 +5,12 @@ function NavBar({ loggedInUser, onLogout }) {
   return (
     <div className="navBar">
       <Link to="/">Interaktivni kalendar</Link>
-      <Link to="/calendar">Calendar</Link>
-      <Link to="/login">Login</Link>
+      <Link to="/calendar">Kalendar</Link>
       <Link to="/events">Događaji</Link>
+      <Link to="/login">Login</Link>
+      
       {loggedInUser && (
-        <button onClick={onLogout}>Odjavi se</button>
+        <button className='login-button' onClick={onLogout}>Odjavi se</button>
       )}
     </div>
   );
