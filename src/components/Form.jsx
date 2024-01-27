@@ -48,19 +48,19 @@ const Form = ({ date, onClose}) => {
       <div>
         <label>Naziv:</label>
         <br/>
-        <input className='login-input' type="text" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+        <input className='form-input' type="text" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
       </div>
       <br/>
       <div>
         <label>Vreme:</label>
         <br/>
-        <input className='login-input' type="text" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
+        <input className='form-input' type="text" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
       </div>
       <br/>
       <div>
         <label>Opis:</label>    
           <br/>
-        <textarea className='login-input' value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
+        <textarea className='form-input' value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
       </div>
       <br/>
       <div className="form-buttons">
