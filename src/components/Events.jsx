@@ -1,5 +1,9 @@
+
 import React, { useState } from 'react';
 import { useEventContext } from '../components/EventContext';
+
+
+
 
 const formatDate = (date) => {
     const day = date.getDate();
@@ -12,7 +16,7 @@ const formatDate = (date) => {
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
 const Events = () => {
-const [exportedEvents, setExportedEvents] = useState([]);
+  const [exportedEvents, setExportedEvents] = useState([]);
   const { events } = useEventContext();
   if (!events || events.length === 0) {
     return <div>Nema sačuvanih dogadjaja.</div>;
@@ -33,6 +37,8 @@ const [exportedEvents, setExportedEvents] = useState([]);
             <div>Naziv: {event.title}</div>            
             <div>Vreme: {event.time}</div> 
             <div>Opis: {event.description}</div>
+            <div>Odabir događaja: {event.selectedEvent}</div>
+            
           </li>
         ))}
       </ul>
