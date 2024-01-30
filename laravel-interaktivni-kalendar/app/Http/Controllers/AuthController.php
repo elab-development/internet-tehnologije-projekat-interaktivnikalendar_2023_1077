@@ -75,4 +75,29 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
         return response()->json('Uspesan logout korisnika.');
     }
+    //resetuj sifru
+    public function resetPassword(Request $request)
+    {   
+
+        $request->validate([
+            'email' => 'required',
+            'new_password' => 'required|string|min:8'
+        ]);
+
+        if(Auth::user()->isAdmin){
+            return response()->json(['error' => 'Admin ne moze menjati sifru!'], 403);
+        }
+       
+        $user = User::where('email', $request->email)->first();
+       
+        if ($user) {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+       
+            return response()->json(['poruka' => 'Sifra uspesno resetovana.']);
+        }
+       
+        return response()->json(['poruka' => 'Korisnik sa tim email-om ne postoji.'], 404);
+    }
+
 }

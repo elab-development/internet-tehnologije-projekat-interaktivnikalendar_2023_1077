@@ -11,6 +11,9 @@ use App\Http\Controllers\LokacijaController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
+//resetovanje lozinke
+Route::post('resetPassword',[AuthController::class,'resetPassword']);
+
 //Svi Neulogovani
 Route::resource('users', UserController::class);
 
@@ -28,5 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('lokacije', [LokacijaController::class, 'store']);
     Route::put('lokacije/{id}', [LokacijaController::class, 'update']); 
     Route::delete('lokacije/{id}', [LokacijaController::class, 'destroy']);
+
+
+    Route::post('logout', [AuthController::class, 'logout']);
 
 });
