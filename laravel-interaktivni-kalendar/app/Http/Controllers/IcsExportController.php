@@ -28,7 +28,7 @@ class IcsExportController extends Controller
             $calendar->event($event);
         }
 
-        // Vracanje .ics fajla kao odgovor
+        // Vracanje .ics fajla kao odgovor na HTTP zavhtev
         return response($calendar->get())
             ->header('Content-Type', 'text/calendar')
             ->header('Content-Disposition', 'attachment; filename="dogadjaji.ics"');
