@@ -17,12 +17,11 @@ class LokacijaFactory extends Factory
     public function definition(): array
     {
         return [
-            'naziv' => $this->faker->sentence,
-            'opis' => $this->faker->paragraph,
-            'datum_pocetka' => $this->faker->dateTimeBetween('now', '+1 week'),
-            'datum_zavrsetka' => $this->faker->dateTimeBetween('+1 week', '+2 weeks'),
-            'lokacija_id' => $this->faker->numberBetween(1,10),
-            'user_id' => $this->faker->numberBetween(1,5),
+            'naziv' => $this->faker->company,
+            'adresa' => $this->faker->address,
+            'grad' => $this->faker->city,
+            'drzava' => $this->faker->country,
+            'poštanski_kod' => $this->faker->postcode,
         ];
     }
 }
