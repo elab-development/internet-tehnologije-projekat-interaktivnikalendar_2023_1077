@@ -18,4 +18,9 @@ class Lokacija extends Model
         'drzava', 
         'poštanski_kod'
     ];
+
+    public function dogadjaji()
+    {
+        return $this->hasMany(Dogadjaj::class);
+    }
 }

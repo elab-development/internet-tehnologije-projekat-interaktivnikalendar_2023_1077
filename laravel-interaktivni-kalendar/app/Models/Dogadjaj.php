@@ -19,4 +19,14 @@ class Dogadjaj extends Model
         'lokacija_id',
         'user_id',
     ];
+
+    public function lokacija()
+    {
+         return $this->belongsTo(Lokacija::class);
+    }
+
+    public function user()
+    {
+         return $this->belongsTo(User::class);
+    }
 }
