@@ -1,0 +1,36 @@
+.navBar {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(211, 211, 211);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: rgb(175, 175, 175);
+  align-items: center;
+  min-height: 40px;
+  padding-left: 25px;
+  font-size: large;
+}
+
+.btn {
+  background-color: cornflowerblue;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 3px;
+  border-radius: 3px;
+  border-width: 0px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.selected-date{
+  background-color: #4caf50; 
+  color: #fff; 
+  border-radius: 50%;
+}
