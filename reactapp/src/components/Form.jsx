@@ -15,6 +15,7 @@ const Form = ({ date, onClose}) => {
   const [eventTitle, setEventTitle] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [eventDescription, setEventDescription] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
   const eventOptions = ['Posao', 'Rodjendani', 'Sastanci'];
 
@@ -35,12 +36,13 @@ const handleChange = (e) => {
   };
 
   const handleSave = () => {
-    if (eventTitle && eventTime && eventDescription) {
+    if (eventTitle && eventTime && eventDescription && eventLocation) {
       const newEvent = {
         date,
         title: eventTitle,
         time: eventTime,
         description: eventDescription,
+        location: eventLocation,
         selectedEvent,
       };
       addEvent(newEvent);
@@ -75,6 +77,11 @@ const handleChange = (e) => {
         <input className='form-input' type="text" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
       </div>
       <br/>
+      <div>
+        <label>Lokacija:</label>
+        <br/>
+        <input className='form-input' type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
+      </div>
       <div>
         <label>Opis:</label>    
           <br/>

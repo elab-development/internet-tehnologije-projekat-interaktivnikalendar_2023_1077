@@ -33,9 +33,9 @@ const Events = () => {
         {events.map((event, index) => (
           <li key={index} style={{ marginBottom: '5px' }}>
             <div>Datum: {formatDate(event.date)}</div>
-            
             <div>Naziv: {event.title}</div>            
             <div>Vreme: {event.time}</div> 
+            <div>Lokacija: {event.location}</div>
             <div>Opis: {event.description}</div>
             <div>Odabir događaja: {event.selectedEvent}</div>
             
