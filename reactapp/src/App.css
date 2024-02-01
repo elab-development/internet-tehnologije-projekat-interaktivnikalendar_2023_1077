@@ -29,21 +29,7 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
-/*
-.container {
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  padding: 20px;
-  width: 60%; 
-  text-align: center;
-  margin: 20px auto; 
-  transition: transform 0.3s ease-in-out;
-}
-.container:hover {
-  transform: scale(1.05);
-}
-*/
+
 
 .cal-buttons{
   background-color: hwb(208 38% 2%);
@@ -67,7 +53,7 @@ a {
 }
 
 li div {
-  margin-bottom: 10px; /* Prilagodi vrednost prema potrebi */
+  margin-bottom: 10px;
 }
 
   
@@ -78,13 +64,13 @@ li div {
   background-color: #4caf50;
   color: #fff;
   border-radius: 40%;
-  padding: 2px 3px; /* Dodato - povećava poluprečnik i poboljšava izgled */
-  font-weight: bold; /* Dodato - čini tekst na selektovanom datumu uočljivijim */
-  transition: background-color 0.3s, transform 0.3s, color 0.3s; /* Dodato - glatkiji prelaz između stanja */
-  cursor: pointer; /* Dodato - označava da je element interaktivan */
+  padding: 2px 3px;
+  font-weight: bold; 
+  transition: background-color 0.3s, transform 0.3s, color 0.3s; 
+  cursor: pointer; 
 }
 
-/* Dodato - efekat smanjenja prilikom hovera */
+
 .selected-date:hover {
   transform: scale(0.95);
 }
@@ -102,25 +88,25 @@ body {
   margin: 0;
   padding: 0;
 }
-/*.form-buttons,*/
+
 .login-button {
   background-color: #282c34;
   color: #fff;
-  padding: 15px 30px; /* Prilagodio sam padding kako bi bio ujednačen sa prethodnim stilom */
+  padding: 15px 30px; 
   cursor: pointer;
   border: none;
-  border-radius: 15px; /* Prilagodio sam border-radius kako bi bio ujednačen sa prethodnim stilom */
+  border-radius: 15px; 
   transition: background-color 0.3s;
 }
-/*.form-buttons:hover,*/
+
 .login-button:hover {
   background-color: #61dafb;
 }
-/* Dodatni stil za dugmice u formi */
+
 .form-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px; /* Dodat razmak između dugmica */
+  margin-top: 20px;
 }
 
 .form-buttons button {
@@ -135,7 +121,7 @@ body {
 
 .form-buttons button:hover {
   background-color: #61dafb;
-  transform: scale(1.05); /* Dodat efekat povećanja prilikom hover-a */
+  transform: scale(1.05); 
 }
 .container {
   margin-bottom: 20px;
@@ -155,7 +141,7 @@ body {
 }
 @media screen and (max-width: 768px) {
   .container {
-    width: 80%; /* Na manjim ekranima smanji širinu kontejnera */
+    width: 80%;
   }
 }
 

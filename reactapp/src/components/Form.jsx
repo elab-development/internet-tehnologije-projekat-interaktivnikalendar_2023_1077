@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useEventContext } from '../components/EventContext';
-/////////////
 import Combobox from '../components/Combobox';
 import { getMouseEventOptions } from '@testing-library/user-event/dist/utils';
 
-////////////
+
 let alertWhenSelected = () => alert('selected!');
 let alertWhenChanged = () => alert('changed!');
 
@@ -16,20 +15,12 @@ const Form = ({ date, onClose}) => {
   const [eventTitle, setEventTitle] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [eventDescription, setEventDescription] = useState('');
-  ////
   const [selectedEvent, setSelectedEvent] = useState('');
   const eventOptions = ['Posao', 'Rodjendani', 'Sastanci'];
 
-/////
 const handleChange = (e) => {
-  // Logika za promenu vrednosti u kombobox-u
   setEventTitle(e.target.value);
 };
-/////
-/*const handleSelect = (e) => {
-  // Logika za odabir vrednosti u kombobox-u
-  setSelectedEvent(e.target.value);
-};*/
 
 
   const formatDate = (date) => {
