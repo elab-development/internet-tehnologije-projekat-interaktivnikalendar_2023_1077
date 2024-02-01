@@ -1,5 +1,9 @@
+
 import React, { useState } from 'react';
 import { useEventContext } from '../components/EventContext';
+
+
+
 
 const formatDate = (date) => {
     const day = date.getDate();
@@ -12,7 +16,7 @@ const formatDate = (date) => {
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
 const Events = () => {
-const [exportedEvents, setExportedEvents] = useState([]);
+  const [exportedEvents, setExportedEvents] = useState([]);
   const { events } = useEventContext();
   if (!events || events.length === 0) {
     return <div>Nema sačuvanih dogadjaja.</div>;
@@ -23,15 +27,18 @@ const [exportedEvents, setExportedEvents] = useState([]);
     console.log('Exported Events:', exportedEvents);
   };
   return (
-    <div>
-        <button onClick={handleExport}>Preuzmi podatke</button>
+    <div className='events-container'>
+        <button className='login-button' onClick={handleExport}>Preuzmi podatke</button>
       <ul>
         {events.map((event, index) => (
-          <li key={index}>
+          <li key={index} style={{ marginBottom: '5px' }}>
             <div>Datum: {formatDate(event.date)}</div>
-            <div>Naziv: {event.title}</div>
-            <div>Vreme: {event.time}</div>
+            
+            <div>Naziv: {event.title}</div>            
+            <div>Vreme: {event.time}</div> 
             <div>Opis: {event.description}</div>
+            <div>Odabir događaja: {event.selectedEvent}</div>
+            
           </li>
         ))}
       </ul>
