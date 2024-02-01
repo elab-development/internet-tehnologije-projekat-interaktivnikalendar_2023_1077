@@ -34,7 +34,7 @@ a {
 .cal-buttons{
   background-color: hwb(208 38% 2%);
   cursor: pointer;
-  border-radius: 5px; 
+  border-radius: 50px; 
   align-items: center;
   font-family: inherit;
   font-weight: 500;
