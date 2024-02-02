@@ -36,7 +36,7 @@ function App() {
     <Router>
        <EventProvider>
       <div className="App">
-        <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />
+        {loggedInUser && <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />}
         <Routes>
           <Route path="/" element={!loggedInUser ? <Login onLogin={handleLogin} /> : <Calendar onDateClick={handleDateClick} />} />
           <Route path="/calendar" element={<Calendar onDateClick={handleDateClick} />} />
