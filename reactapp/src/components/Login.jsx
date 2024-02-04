@@ -1,43 +1,55 @@
 import React, { useState } from 'react';
 import ForgotPassword from './ForgotPassword';
+import axios from 'axios';
+import Register from './Register';
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
 
   const handleLogin = () => {
-    console.log('Logging in as:', username);
-
-    if (onLogin) {
-      onLogin(username);
-    }
-
-    setShowForgotPassword(true);
+    axios.post("http://127.0.0.1:8000/api/login", { email, password })
+      .then((res) => {
+        console.log(res.data);
+        if (onLogin) {
+          onLogin(res.data.User);
+        }
+        setShowForgotPassword(true);
+      })
+      .catch((error) => {
+        console.log("Greska pri logovanju:", error.response.data);
+      });
   };
 
   const handleForgotPassword = () => {
     setShowForgotPassword(true);
   };
 
+  const handleRegistration = () => {
+    setShowRegistration(true);
+  };
   return (
     <div className='login-container'>
       <h2>Login</h2>
-      <form > 
+      <form>
         <label>
-          Username: 
-          <input className='login-input' value={username} onChange={(e) => setUsername(e.target.value)} />
+          Email:
+          <input className='login-input' value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <br />
         <label>
-          Lozinka: 
-          <input className='login-input' value={password} onChange={(e) => setPassword(e.target.value)} />
+          Lozinka:
+          <input className='login-input' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
         <br />
         <button className='login-button' onClick={handleLogin}>Uloguj se</button>
         <br /><br />
+        <p onClick={handleRegistration} style={{ cursor: 'pointer', color: '#30869e' }}>Registruj se</p>   
         <p onClick={handleForgotPassword} style={{ cursor: 'pointer', color: '#30869e' }}>Zaboravljena lozinka?</p><br />
       </form>
+      {showRegistration && <Register onCancel={() => setShowRegistration(false)} />}
       {showForgotPassword && <ForgotPassword onCancel={() => setShowForgotPassword(false)} />}
     </div>
   );
