@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const ForgotPassword = ({ onCancel }) => {
   const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-  const handleResetPassword = () => {
-    console.log('Password reset requested for email:', email);
-    
-    if (onCancel) {
-      onCancel();
-    }
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    axios.post("http://127.0.0.1:8000/api/resetPassword", {
+      email,
+      new_password: newPassword, 
+    })
+    .then((response) => {
+      console.log(response.data);
+      if (onCancel) {
+        onCancel();
+      }
+    })
+    .catch((error) => {
+      console.error("Greška prilikom resetovanja lozinke:", error.response.data);
+    });
   };
 
   return (
@@ -18,6 +29,11 @@ const ForgotPassword = ({ onCancel }) => {
         <label>
           Email:
           <input className='login-input' value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Nova lozinka:
+          <input className='login-input' type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
         </label>
         <br />
         <button className='login-button' onClick={handleResetPassword}>Resetuj lozinku</button>

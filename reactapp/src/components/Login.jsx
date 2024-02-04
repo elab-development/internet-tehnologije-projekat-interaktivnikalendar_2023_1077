@@ -9,14 +9,17 @@ const Login = ({ onLogin }) => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     axios.post("http://127.0.0.1:8000/api/login", { email, password })
       .then((res) => {
         console.log(res.data);
         if (onLogin) {
-          onLogin(res.data.User);
+          onLogin(res.data);
         }
-        setShowForgotPassword(true);
+        if(res.data.success === true){
+          window.sessionStorage.setItem("auth_token", res.data.token);
+        }
       })
       .catch((error) => {
         console.log("Greska pri logovanju:", error.response.data);
