@@ -36,14 +36,23 @@ function App() {
     <Router>
        <EventProvider>
       <div className="App">
-        {loggedInUser && <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />}
+        { <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />}
         <Routes>
-          <Route path="/" element={!loggedInUser ? <Login onLogin={handleLogin} /> : <Calendar onDateClick={handleDateClick} />} />
-          <Route path="/calendar" element={<Calendar onDateClick={handleDateClick} />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/events" element={<Events events={events} />} />
-          <Route path="/form" element={<Form onAddEvent={handleAddEvent} />} />
-        </Routes>
+  <Route
+    path="/"
+    element={
+      loggedInUser ? (
+        <Calendar onDateClick={handleDateClick} />
+      ) : (
+        <Login onLogin={handleLogin} />
+      )
+    }
+  />
+  <Route path="/calendar" element={<Calendar onDateClick={handleDateClick} />} />
+  <Route path="/login" element={<Login onLogin={handleLogin} />} />
+  <Route path="/events" element={<Events events={events} />} />
+  <Route path="/form" element={<Form onAddEvent={handleAddEvent} />} />
+</Routes>
       </div>
       </EventProvider>
     </Router>
