@@ -10,9 +10,11 @@ const Register = ({ onRegistration, onCancel }) => {
     e.preventDefault();
     axios.post("http://127.0.0.1:8000/api/register", { name, email, password })
       .then((res) => {
+        alert("Uspešna registracija");
         console.log(res.data);
         if (onRegistration) {
           onRegistration(res.data.User);
+         
         }
       })
       .catch((error) => {
