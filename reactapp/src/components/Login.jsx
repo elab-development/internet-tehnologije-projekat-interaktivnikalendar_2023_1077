@@ -13,16 +13,14 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     axios.post("http://127.0.0.1:8000/api/login", { email, password })
       .then((res) => {
-        
         console.log(res.data);
-        if (onLogin) {
-          onLogin(res.data);
-        }
-        if(res.data.success === true){
+        if (res.data.success === true) {
           alert("Uspešno prijavljivanje");
           window.sessionStorage.setItem("TokenLogin", res.data.Token);
-        }
-        else{
+          if (onLogin) {
+            onLogin(res.data);
+          }
+        } else {
           alert("Neuspešno prijavljivanje");
         }
       })
