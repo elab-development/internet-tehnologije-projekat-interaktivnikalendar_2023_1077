@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import ForgotPassword from './ForgotPassword';
 import axios from 'axios';
 import Register from './Register';
+import { useAuthContext } from './AuthContext';
 
 const Login = ({ onLogin }) => {
+  const { login } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -20,6 +22,7 @@ const Login = ({ onLogin }) => {
           if (onLogin) {
             onLogin(res.data);
           }
+          login(res.data.user);  // Dodaj ovo da bi postavio korisnika u AuthContext
         } else {
           alert("Neuspešno prijavljivanje");
         }

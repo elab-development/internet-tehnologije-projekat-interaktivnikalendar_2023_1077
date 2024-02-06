@@ -1,16 +1,16 @@
-import React, { createContext, useContext, useState } from 'react';
+// EventProvider.js
+import React, { createContext, useContext } from 'react';
 
 const EventContext = createContext();
 
 export const EventProvider = ({ children }) => {
-  const [events, setEvents] = useState([]);
-
-  const addEvent = (newEvent) => {
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
+  // Dodaj logiku za rad sa događajima
+  const addEvent = (event) => {
+    // Implementiraj dodavanje događaja
   };
 
   return (
-    <EventContext.Provider value={{ events, addEvent }}>
+    <EventContext.Provider value={{ addEvent }}>
       {children}
     </EventContext.Provider>
   );
