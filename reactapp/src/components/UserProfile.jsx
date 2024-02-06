@@ -20,14 +20,14 @@ const UserProfile = () => {
   }, [userId]);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div>Učitavanje...</div>;
   }
 
   return (
     <div>
-      <h2>User Profile</h2>
+      <h2>Profil korisnika</h2>
       <p>ID: {user.id}</p>
-      <p>Name: {user.name}</p>
+      <p>Ime: {user.name}</p>
       <p>Email: {user.email}</p>
     </div>
   );

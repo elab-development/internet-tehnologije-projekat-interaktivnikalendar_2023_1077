@@ -22,7 +22,7 @@ const Login = ({ onLogin }) => {
           if (onLogin) {
             onLogin(res.data);
           }
-          login(res.data['User: ']);  // Dodaj ovo da bi postavio korisnika u AuthContext
+          login(res.data['User: ']);
         } else {
           alert("Neuspešno prijavljivanje");
         }

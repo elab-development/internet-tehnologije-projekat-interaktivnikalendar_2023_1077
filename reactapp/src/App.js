@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/korisnik');
+        const response = await axios.get('http://localhost:8000/api/users');
         console.log('Fetched user role response:', response?.data);
     
         if (response.data && response.data.isAdmin !== undefined) {

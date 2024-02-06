@@ -12,6 +12,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   const [eventLocation, setEventLocation] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
   // Polja za admina
+  const [existingLocation, setExistingLocation] = useState(null);
   const [eventAddress, setEventAddress] = useState('');
   const [eventCity, setEventCity] = useState('');
   const [eventCountry, setEventCountry] = useState('');
@@ -20,13 +21,13 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   // Dodaj isAdmin u lokalno stanje komponente
   const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
-useEffect(() => {
-  setIsAdmin((user && user.isAdmin) || isAdminProp);
-}, [isAdminProp, user && user.isAdmin]);
-
-  const handleChange = (e) => {
-    setEventTitle(e.target.value);
-  };
+  useEffect(() => {
+    setIsAdmin((user && user.isAdmin) || isAdminProp);
+  }, [isAdminProp, user && user.isAdmin]);
+  
+  useEffect(() => {
+    setExistingLocation(existingLocations && existingLocations.find(loc => loc.naziv === eventLocation));
+  }, [existingLocations, eventLocation]);
 
   const formatDate = (date) => {
     const day = date.getDate();
@@ -40,18 +41,21 @@ useEffect(() => {
   };
 
   const handleSave = async () => {
-    {console.log('isAdmin is true:', isAdmin)}
+    console.log('isAdmin is true:', isAdmin);
     try {
+      let locationAdded = false;
+  
       if (isAdmin) {
-        const response = await axios.post('http://localhost:8000/api/lokacije', {
+        const responseLocation = await axios.post('http://localhost:8000/api/lokacije', {
           naziv: eventLocation,
           adresa: eventAddress,
           grad: eventCity,
           drzava: eventCountry,
           poštanski_kod: eventPostalCode,
         });
-
-        if (response.data.success) {
+  
+        if (responseLocation.data.success) {
+          locationAdded = true;
           const newEvent = {
             date,
             title: eventTitle,
@@ -69,7 +73,7 @@ useEffect(() => {
         }
       } else {
         const existingLocation = existingLocations.find(loc => loc.naziv === eventLocation);
-
+  
         if (existingLocation) {
           const newEvent = {
             date,
@@ -79,9 +83,9 @@ useEffect(() => {
             location: eventLocation,
             selectedEvent,
           };
-
+  
           await axios.post('http://localhost:8000/api/dogadjaji', newEvent);
-
+  
           addEvent(newEvent);
           onClose();
           alert('Događaj je sačuvan!');
@@ -90,19 +94,112 @@ useEffect(() => {
         }
       }
     } catch (error) {
-      
       console.error('Error creating/updating location or event:', error);
       alert('Greška prilikom komunikacije sa serverom');
     }
   };
+  
+
+  
+
+  const handleAddLocation = async () => {
+    try {
+      const token = window.sessionStorage.getItem("TokenLogin");
+  
+      // Kreiraj objekat sa podacima lokacije
+      const newLocationData = {
+        naziv: eventLocation,
+        adresa: eventAddress,
+        grad: eventCity,
+        drzava: eventCountry,
+        poštanski_kod: eventPostalCode,
+      };
+  
+      // Pošalji zahtev ka serveru za dodavanje nove lokacije
+      const response = await axios.post('http://localhost:8000/api/lokacije', newLocationData, {
+        headers: {
+          Authorization: `Bearer ${token}` // Dodaj token u zaglavlje
+        }
+      });
+  
+      // Proveri odgovor servera
+      if (response.status === 200) {
+        // Prikaži poruku o uspehu ako je uspešno dodata lokacija
+        alert('Uspešno dodata nova lokacija!');
+      } else {
+        // Ako nije vraćen uspešan status kod, prikaži odgovarajuću poruku
+        alert('Dodavanje nove lokacije nije uspelo.');
+      }
+    } catch (error) {
+      // Uhvati grešku u komunikaciji sa serverom
+      console.error('Greška prilikom komunikacije sa serverom:', error);
+      alert('Greška prilikom komunikacije sa serverom');
+    }
+  };
+  
+
+
+
 
   const handleUpdateLocation = async () => {
-    // Implementiraj logiku za izmenu postojeće lokacije
+    try {
+      const token = window.sessionStorage.getItem("TokenLogin");
+      
+      // Check if existingLocation exists before proceeding
+      if (!existingLocation) {
+        throw new Error('Existing location is not defined');
+      }
+  
+      const responseUpdate = await axios.put(`http://localhost:8000/api/lokacije/${existingLocation.id}`, {
+        naziv: eventLocation,
+        adresa: eventAddress,
+        grad: eventCity,
+        drzava: eventCountry,
+        poštanski_kod: eventPostalCode,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      if (responseUpdate.data.success) {
+        alert('Uspešno ažurirana lokacija!');
+      } else {
+        alert('Greška prilikom ažuriranja lokacije!');
+      }
+    } catch (error) {
+      console.error('Error updating location:', error);
+      alert('Greška prilikom komunikacije sa serverom');
+    }
   };
-
+  
   const handleDeleteLocation = async () => {
-    // Implementiraj logiku za brisanje postojeće lokacije
+    try {
+      const token = window.sessionStorage.getItem("TokenLogin");
+      
+      // Check if existingLocation exists before proceeding
+      if (!existingLocation) {
+        throw new Error('Existing location is not defined');
+      }
+  
+      const response = await axios.delete(`http://localhost:8000/api/lokacije/${existingLocation.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      if (response.data.success) {
+        alert('Uspešno obrisana lokacija!');
+      } else {
+        alert('Greška prilikom brisanja lokacije!');
+      }
+    } catch (error) {
+      console.error('Error deleting location:', error);
+      alert('Greška prilikom komunikacije sa serverom');
+    }
   };
+  
+
 
   const handleCancel = () => {
     onClose();
@@ -115,37 +212,42 @@ useEffect(() => {
       {isAdmin && (
         <>
           <div>
-            <label>Naziv lokacije:</label>
-            <br/>
-            <input className='form-input' type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
-          </div>
+  <label>Naziv lokacije:</label>
+  <br/>
+  <input className='form-input' type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
+</div>
+<br/>
+<div>
+  <label>Adresa lokacije:</label>
+  <br/>
+  <input className='form-input' type="text" value={eventAddress} onChange={(e) => setEventAddress(e.target.value)} />
+</div>
+<br/>
+<div>
+  <label>Grad lokacije:</label>
+  <br/>
+  <input className='form-input' type="text" value={eventCity} onChange={(e) => setEventCity(e.target.value)} />
+</div>
+<br/>
+<div>
+  <label>Država lokacije:</label>
+  <br/>
+  <input className='form-input' type="text" value={eventCountry} onChange={(e) => setEventCountry(e.target.value)} />
+</div>
+<br/>
+<div>
+  <label>Poštanski kod lokacije:</label>
+  <br/>
+  <input className='form-input' type="text" value={eventPostalCode} onChange={(e) => setEventPostalCode(e.target.value)} />
+</div>
+<br/>
+
           <br/>
-          <div>
-            <label>Adresa lokacije:</label>
-            <br/>
-            <input className='form-input' type="text" value={eventAddress} onChange={(e) => setEventAddress(e.target.value)} />
+          <div className="form-buttons">
+            <button onClick={handleAddLocation}>Dodaj lokaciju</button>
+            <button onClick={handleUpdateLocation}>Izmeni lokaciju</button>
+            <button onClick={handleDeleteLocation}>Obriši lokaciju</button>
           </div>
-          <br/>
-          <div>
-            <label>Grad lokacije:</label>
-            <br/>
-            <input className='form-input' type="text" value={eventCity} onChange={(e) => setEventCity(e.target.value)} />
-          </div>
-          <br/>
-          <div>
-            <label>Država lokacije:</label>
-            <br/>
-            <input className='form-input' type="text" value={eventCountry} onChange={(e) => setEventCountry(e.target.value)} />
-          </div>
-          <br/>
-          <div>
-            <label>Poštanski kod lokacije:</label>
-            <br/>
-            <input className='form-input' type="text" value={eventPostalCode} onChange={(e) => setEventPostalCode(e.target.value)} />
-          </div>
-          <br/>
-          <button onClick={handleUpdateLocation}>Izmeni lokaciju</button>
-          <button onClick={handleDeleteLocation}>Obriši lokaciju</button>
         </>
       )}
       <div>
