@@ -22,16 +22,25 @@ function App() {
     const fetchUserRole = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/korisnik');
-        login({ ...user, isAdmin: response.data.isAdmin });
+        console.log('Fetched user role response:', response?.data);
+    
+        if (response.data && response.data.isAdmin !== undefined) {
+          console.log('Setting user data:', response.data);
+          login((prevUser) => ({ ...prevUser, isAdmin: response.data.isAdmin }));
+        } else {
+          console.error('Invalid user data received from server:', response.data);
+        }
       } catch (error) {
         console.error('Error fetching user role:', error);
       }
     };
-
+    
+  
     if (user) {
       fetchUserRole();
     }
   }, [user, login]);
+  
 
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [events, setEvents] = useState([]);
@@ -54,29 +63,28 @@ function App() {
 
   return (
     <EventProvider>
-    <div className="App">
-            <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  loggedInUser ? (
-                    <Calendar onDateClick={handleDateClick} />
-                  ) : (
-                    <Login onLogin={handleLogin} />
-                  )
-                }
-              />
-              <Route path="/calendar" element={<Calendar onDateClick={handleDateClick} />} />
-              <Route path="/login" element={<Login onLogin={handleLogin} />} />
-              <Route path="/events" element={<Events events={events} />} />
-              <Route path="/form" element={<Form onAddEvent={handleAddEvent} />} />
-              <Route path="/users" element={<UserList />} />
-              <Route path="/users/:userId" element={<UserProfile />} />
-            </Routes>
-          </div>
-          </EventProvider>
-        
+      <div className="App">
+        <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              loggedInUser ? (
+                <Calendar onDateClick={handleDateClick} />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+          <Route path="/calendar" element={<Calendar onDateClick={handleDateClick} />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/events" element={<Events events={events} />} />
+          <Route path="/form" element={<Form onAddEvent={handleAddEvent} />} />
+          <Route path="/users" element={<UserList />} />
+          <Route path="/users/:userId" element={<UserProfile />} />
+        </Routes>
+      </div>
+    </EventProvider>
   );
 }
 

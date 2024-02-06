@@ -4,7 +4,7 @@ import { useAuthContext } from './AuthContext';
 import { EventProvider, useEventContext } from '../components/EventContext';
 
 const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
-  const { user, setUser } = useAuthContext();
+  const { user } = useAuthContext();
   const { addEvent } = useEventContext();
   const [eventTitle, setEventTitle] = useState('');
   const [eventTime, setEventTime] = useState('');
@@ -18,11 +18,11 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   const [eventPostalCode, setEventPostalCode] = useState('');
 
   // Dodaj isAdmin u lokalno stanje komponente
-  const [isAdmin, setIsAdmin] = useState(isAdminProp);
+  const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
-  useEffect(() => {
-    setIsAdmin(isAdminProp);
-  }, [isAdminProp]);
+useEffect(() => {
+  setIsAdmin((user && user.isAdmin) || isAdminProp);
+}, [isAdminProp, user && user.isAdmin]);
 
   const handleChange = (e) => {
     setEventTitle(e.target.value);
@@ -40,6 +40,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   };
 
   const handleSave = async () => {
+    {console.log('isAdmin is true:', isAdmin)}
     try {
       if (isAdmin) {
         const response = await axios.post('http://localhost:8000/api/lokacije', {
@@ -47,7 +48,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
           adresa: eventAddress,
           grad: eventCity,
           drzava: eventCountry,
-          'poštanski_kod': eventPostalCode,
+          poštanski_kod: eventPostalCode,
         });
 
         if (response.data.success) {
@@ -61,6 +62,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
           };
           addEvent(newEvent);
           onClose();
+          console.log(isAdmin);
           alert('Događaj je sačuvan!');
         } else {
           alert('Greška prilikom kreiranja/izmene lokacije!');
@@ -88,6 +90,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
         }
       }
     } catch (error) {
+      
       console.error('Error creating/updating location or event:', error);
       alert('Greška prilikom komunikacije sa serverom');
     }

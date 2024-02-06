@@ -7,9 +7,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (userData) => {
-    setUser(userData);
+    console.log('Setting user data:', userData);
+    setUser((prevUser) => {
+      console.log('Previous user data:', prevUser);
+      return userData;
+    });
   };
-
+  
   const logout = () => {
     setUser(null);
   };
@@ -22,5 +26,11 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuthContext = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+
+  return context;
 };
