@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthContext } from './AuthContext';
-import { useEventContext } from '../components/EventContext';
+import { EventProvider, useEventContext } from '../components/EventContext';
 
 const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   const { user, setUser } = useAuthContext();

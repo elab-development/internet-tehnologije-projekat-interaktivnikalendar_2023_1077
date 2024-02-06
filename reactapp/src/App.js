@@ -53,6 +53,7 @@ function App() {
   };
 
   return (
+    <EventProvider>
     <div className="App">
             <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />
             <Routes>
@@ -74,6 +75,7 @@ function App() {
               <Route path="/users/:userId" element={<UserProfile />} />
             </Routes>
           </div>
+          </EventProvider>
         
   );
 }
