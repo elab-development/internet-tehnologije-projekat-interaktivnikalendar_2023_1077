@@ -100,46 +100,6 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   };
   
 
-  
-
-  const handleAddLocation = async () => {
-    try {
-      const token = window.sessionStorage.getItem("TokenLogin");
-  
-      
-      const newLocationData = {
-        naziv: eventLocation,
-        adresa: eventAddress,
-        grad: eventCity,
-        drzava: eventCountry,
-        poštanski_kod: eventPostalCode,
-      };
-  
-      
-      const response = await axios.post('http://localhost:8000/api/lokacije', newLocationData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-  
-      // Proveri odgovor servera
-      if (response.status === 200) {
-        
-        alert('Uspešno dodata nova lokacija!');
-      } else {
-        
-        alert('Dodavanje nove lokacije nije uspelo.');
-      }
-    } catch (error) {
-      console.error('Greška prilikom komunikacije sa serverom:', error);
-      alert('Greška prilikom komunikacije sa serverom');
-    }
-  };
-  
-
-
-
-
   const handleUpdateLocation = async () => {
     try {
       const token = window.sessionStorage.getItem("TokenLogin");
@@ -183,46 +143,6 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
     <div className="form-container">
       <h3>Dodaj događaj na dan {formatDate(date)}</h3>
       <br/>
-      {isAdmin && (
-        <>
-          <div>
-  <label>Naziv lokacije:</label>
-  <br/>
-  <input className='form-input' type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
-</div>
-<br/>
-<div>
-  <label>Adresa lokacije:</label>
-  <br/>
-  <input className='form-input' type="text" value={eventAddress} onChange={(e) => setEventAddress(e.target.value)} />
-</div>
-<br/>
-<div>
-  <label>Grad lokacije:</label>
-  <br/>
-  <input className='form-input' type="text" value={eventCity} onChange={(e) => setEventCity(e.target.value)} />
-</div>
-<br/>
-<div>
-  <label>Država lokacije:</label>
-  <br/>
-  <input className='form-input' type="text" value={eventCountry} onChange={(e) => setEventCountry(e.target.value)} />
-</div>
-<br/>
-<div>
-  <label>Poštanski kod lokacije:</label>
-  <br/>
-  <input className='form-input' type="text" value={eventPostalCode} onChange={(e) => setEventPostalCode(e.target.value)} />
-</div>
-<br/>
-
-          <br/>
-          <div className="form-buttons">
-            <button onClick={handleAddLocation}>Dodaj lokaciju</button>
-            <button onClick={handleUpdateLocation}>Izmeni lokaciju</button>
-          </div>
-        </>
-      )}
       <div>
         <label>Naziv:</label>
         <br/>
