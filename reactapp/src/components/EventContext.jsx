@@ -1,4 +1,3 @@
-// EventProvider.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const EventContext = createContext();
@@ -11,7 +10,6 @@ export const EventProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Ažuriraj vrednosti koje pružaš preko EventContext.Provider
   }, [events]);
 
   return (

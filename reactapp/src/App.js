@@ -10,6 +10,7 @@ import Events from './components/Events';
 import Form from './components/Form';
 import UserList from './components/UserList';
 import UserProfile from './components/UserProfile';
+import Lokacije from './components/Lokacije';
 import { useAuthContext } from './components/AuthContext';
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
           <Route path="/events" element={<Events events={events} />} />
           <Route path="/form" element={<Form onAddEvent={handleAddEvent} />} />
           <Route path="/users" element={<UserList />} />
+          <Route path="/lokacije" element={<Lokacije />} />
           <Route path="/users/:userId" element={<UserProfile />} />
         </Routes>
       </div>

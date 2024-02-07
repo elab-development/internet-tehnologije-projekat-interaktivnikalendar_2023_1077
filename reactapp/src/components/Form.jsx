@@ -18,7 +18,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   const [eventCountry, setEventCountry] = useState('');
   const [eventPostalCode, setEventPostalCode] = useState('');
 
-  // Dodaj isAdmin u lokalno stanje komponente
+
   const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
     try {
       const token = window.sessionStorage.getItem("TokenLogin");
   
-      // Kreiraj objekat sa podacima lokacije
+      
       const newLocationData = {
         naziv: eventLocation,
         adresa: eventAddress,
@@ -115,23 +115,22 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
         poštanski_kod: eventPostalCode,
       };
   
-      // Pošalji zahtev ka serveru za dodavanje nove lokacije
+      
       const response = await axios.post('http://localhost:8000/api/lokacije', newLocationData, {
         headers: {
-          Authorization: `Bearer ${token}` // Dodaj token u zaglavlje
+          Authorization: `Bearer ${token}`
         }
       });
   
       // Proveri odgovor servera
       if (response.status === 200) {
-        // Prikaži poruku o uspehu ako je uspešno dodata lokacija
+        
         alert('Uspešno dodata nova lokacija!');
       } else {
-        // Ako nije vraćen uspešan status kod, prikaži odgovarajuću poruku
+        
         alert('Dodavanje nove lokacije nije uspelo.');
       }
     } catch (error) {
-      // Uhvati grešku u komunikaciji sa serverom
       console.error('Greška prilikom komunikacije sa serverom:', error);
       alert('Greška prilikom komunikacije sa serverom');
     }
@@ -145,7 +144,6 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
     try {
       const token = window.sessionStorage.getItem("TokenLogin");
       
-      // Check if existingLocation exists before proceeding
       if (!existingLocation) {
         throw new Error('Existing location is not defined');
       }
@@ -177,7 +175,6 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
     try {
       const token = window.sessionStorage.getItem("TokenLogin");
       
-      // Check if existingLocation exists before proceeding
       if (!existingLocation) {
         throw new Error('Existing location is not defined');
       }
@@ -267,7 +264,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
         <br/>
         <input className='form-input' type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
       </div>
-      {/* ... ostatak forme za sve korisnike ... */}
+      {/*forma za sve korisnike */}
       <br/>
       <div className="form-buttons">
         <button onClick={handleSave}>Sačuvaj</button>
