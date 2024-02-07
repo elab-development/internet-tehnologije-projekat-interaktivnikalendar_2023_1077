@@ -171,30 +171,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
     }
   };
   
-  const handleDeleteLocation = async () => {
-    try {
-      const token = window.sessionStorage.getItem("TokenLogin");
-      
-      if (!existingLocation) {
-        throw new Error('Existing location is not defined');
-      }
-  
-      const response = await axios.delete(`http://localhost:8000/api/lokacije/${existingLocation.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-  
-      if (response.data.success) {
-        alert('Uspešno obrisana lokacija!');
-      } else {
-        alert('Greška prilikom brisanja lokacije!');
-      }
-    } catch (error) {
-      console.error('Error deleting location:', error);
-      alert('Greška prilikom komunikacije sa serverom');
-    }
-  };
+
   
 
 
@@ -243,7 +220,6 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
           <div className="form-buttons">
             <button onClick={handleAddLocation}>Dodaj lokaciju</button>
             <button onClick={handleUpdateLocation}>Izmeni lokaciju</button>
-            <button onClick={handleDeleteLocation}>Obriši lokaciju</button>
           </div>
         </>
       )}
