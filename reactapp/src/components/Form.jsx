@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getUserObject } from './AuthContext';
+import { getUserObject, getToken } from './AuthContext';
 import { useLocationContext } from './LocationContext';
 import { useEventContext } from '../components/EventContext';
 
 const Form = ({ date, onClose, isAdminProp, locations }) => {
-  const { user } = getUserObject();
+  
   const { addEvent } = useEventContext();
   const [eventTitle, setEventTitle] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [eventLocation, setEventLocation] = useState('');
-  const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
+  const user = getUserObject();
+ // const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
-  useEffect(() => {
+ /* useEffect(() => {
     setIsAdmin((user && user.isAdmin) || isAdminProp);
-  }, [isAdminProp, user && user.isAdmin]);
+  }, [isAdminProp, user && user.isAdmin]);*/
 
   useEffect(() => {
     if (locations.length > 0) {
@@ -33,6 +34,7 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
 
   const handleSave = async () => {
     try {
+      console.log(user)
       if (!user || !user.id) {
         alert('Korisnik nije pravilno prijavljen!');
         return;
@@ -52,8 +54,11 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
         lokacija_id: eventLocation, 
         user_id: user.id,
       };
-  
-      const response = await axios.post('http://localhost:8000/api/dogadjaji', newEvent);
+      const token = getToken();
+      const response = await axios.post('http://localhost:8000/api/dogadjaji', newEvent,  {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }});
   
       if (response.data && response.data[0] && response.data[0].includes('Uspešno kreiran novi dogadjaj')) {
         
