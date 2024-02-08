@@ -4,21 +4,12 @@ import { useAuthContext } from './AuthContext';
 import { useLocationContext } from './LocationContext';
 import { useEventContext } from '../components/EventContext';
 
-const Form = ({ date, onClose, isAdminProp, locations}) => {
-  const { user } = useAuthContext(); 
+const Form = ({ date, onClose, isAdminProp, locations }) => {
+  const { user } = useAuthContext();
   const { addEvent } = useEventContext();
   const [eventTitle, setEventTitle] = useState('');
-  const [eventTime, setEventTime] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [eventLocation, setEventLocation] = useState('');
-  const [selectedEvent, setSelectedEvent] = useState('');
-  // Polja za admina
-  const [existingLocation, setExistingLocation] = useState(null);
-  const [eventAddress, setEventAddress] = useState('');
-  const [eventCity, setEventCity] = useState('');
-  const [eventCountry, setEventCountry] = useState('');
-  const [eventPostalCode, setEventPostalCode] = useState('');
-
   const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
   useEffect(() => {
@@ -27,86 +18,101 @@ const Form = ({ date, onClose, isAdminProp, locations}) => {
 
   useEffect(() => {
     if (locations.length > 0) {
-      setEventLocation(locations[0].naziv);
+      setEventLocation(locations[0].id || ''); // Postavljamo prvu lokaciju kao podrazumevanu, ili prazan string ako nema lokacija
     }
   }, [locations]);
-
-  useEffect(() => {
-    setExistingLocation(locations.find(loc => loc.naziv === eventLocation)); 
-  }, [locations, eventLocation]);
 
   const formatDate = (date) => {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
-
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
 
   const handleSave = async () => {
     try {
+      if (!user || !user.id) {
+        alert('Korisnik nije pravilno prijavljen!');
+        return;
+      }
+  
+      if (!eventLocation) {
+        alert('Lokacija nije odabrana!');
+        return;
+      }
+  
+      const formattedDate = formatDate(date);
+      const formattedDateForApi = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
       const newEvent = {
         naziv: eventTitle,
         opis: eventDescription,
-        datum: formatDate(date),
-        lokacija_id: eventLocation.id, // Pretpostavka: lokacija ima svoj ID
+        datum: formattedDateForApi,
+        lokacija_id: eventLocation, // Postavljamo samo ID lokacije
+        user_id: user.id,
       };
   
       const response = await axios.post('http://localhost:8000/api/dogadjaji', newEvent);
   
-      if (response.data.success) {
+      if (response.data && response.data[0] && response.data[0].includes('Uspešno kreiran novi dogadjaj')) {
+        // Ako je poruka o uspehu sadržana u odgovoru, prikaži je
+        alert(response.data[0]);
         addEvent(newEvent);
         onClose();
-        alert('Događaj je uspešno sačuvan!');
       } else {
-        alert('Došlo je do greške prilikom čuvanja događaja!');
+        // Ako nije, prikaži generičku poruku o grešci
+        alert('Došlo je do greške prilikom čuvanja događaja.');
       }
     } catch (error) {
       console.error('Greška prilikom komunikacije sa serverom:', error);
-      alert('Greška prilikom komunikacije sa serverom');
+      alert('Došlo je do greške prilikom komunikacije sa serverom');
     }
   };
+  
+  
 
   const handleCancel = () => {
     onClose();
   };
+
+  const handleLocationChange = (e) => {
+    const selectedLocationId = e.target.value;
+    setEventLocation(selectedLocationId); // Postavljamo ID lokacije umjesto cijelog objekta
+  };
+
   return (
     <div className="form-container">
       <h3>Dodaj događaj na dan {formatDate(date)}</h3>
-      <br/>
+      <br />
       <div>
         <label>Naziv:</label>
-        <br/>
+        <br />
         <input className='form-input' type="text" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
       </div>
-      <br/>
+      <br />
       <div>
-        <label>Vreme:</label>
-        <br/>
-        <input className='form-input' type="text" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
+        <label>Opis:</label>
+        <br />
+        <textarea value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
       </div>
-      <br/>
+      <br />
       <div>
         <label>Lokacija:</label>
         <br />
-        <select value={eventLocation} onChange={(e) => setEventLocation(e.target.value)}>
+        <select value={eventLocation} onChange={handleLocationChange}>
           <option value="">Izaberite lokaciju...</option>
-          {locations.map((location, index) => (
-            <option key={index} value={location.naziv}>{location.naziv}</option> // Promijenjeno
+          {locations.map((location) => (
+            <option key={location.id} value={location.id}>{location.naziv}</option>
           ))}
         </select>
       </div>
-
-      {/*forma za sve korisnike */}
-      <br/>
+      <br />
       <div className="form-buttons">
         <button onClick={handleSave}>Sačuvaj</button>
         <button onClick={handleCancel}>Odustani</button>
       </div>
-      <br/>
+      <br />
     </div>
   );
 };
