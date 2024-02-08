@@ -66,7 +66,7 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
       }
     } catch (error) {
       console.error('Greška prilikom komunikacije sa serverom:', error);
-      alert('Došlo je do greške prilikom komunikacije sa serverom');
+      alert('Došlo je do greške prilikom komunikacije sa serverom. Administrator ne može da dodaje nove događaje, samo ulogovani korisnik može!');
     }
   };
   
