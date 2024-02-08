@@ -15,21 +15,21 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     axios.post("http://127.0.0.1:8000/api/login", { email, password })
       .then((res) => {
-        console.log(res.data);
+        console.log("heej ovde sam !!!")
+        console.log(res)
         if (res.data.success === true) {
           alert("Uspešno prijavljivanje");
-          window.sessionStorage.setItem("TokenLogin", res.data.Token);
           if (onLogin) {
             onLogin(res.data);
           }
-          login(res.data['User: ']);
+          login(res.data.User);
         } else {
           alert("Neuspešno prijavljivanje");
         }
       })
       .catch((error) => {
         alert("Greška prilikom prijavljivanja");
-        console.log("Greska pri logovanju:", error.response.data);
+        console.log("Greska pri logovanju:", error);
       });
   };
 

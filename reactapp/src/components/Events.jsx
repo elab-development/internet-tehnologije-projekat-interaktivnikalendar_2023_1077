@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuthContext } from './AuthContext';
+import { getUserObject, getToken } from './AuthContext';
 
+const sendNotificationEmail = async (eventId) => {
+  try {
+    const response = await axios.post('http://localhost:8000/send-email', {
+      eventId: eventId,
+    });
+    alert('Notifikacija je uspešno poslata na vašu email adresu!');
+  } catch (error) {
+    console.error('Greška prilikom slanja notifikacije na email:', error);
+    alert('Došlo je do greške prilikom slanja notifikacije na email.');
+  }
+};
 
 const formatDate = (date) => {
   const day = date.getDate();
@@ -18,47 +29,55 @@ const formattedDateForApi = (date) => `${date.getFullYear()}-${date.getMonth() +
 
 const Events = () => {
   const [events, setEvents] = useState([]);
-  const [locations, setLocations] = useState([]);
+  //const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingEventId, setEditingEventId] = useState(null);
   const [updatedEvent, setUpdatedEvent] = useState({});
-  const { user } = useAuthContext();
+  const user = getUserObject();
 
-  const fetchEvents = async () => {
+   const fetchEvents = async () => {
+    const token = getToken();
     try {
-      const responseEvents = await axios.get(`http://localhost:8000/api/dogadjaji?user_id=${user.id}`);
-      const eventData = responseEvents.data.data;
-      setEvents(eventData);
-
-      const responseLocations = await axios.get('http://localhost:8000/api/lokacije');
+      const responseEvents = await axios.get(`http://localhost:8000/api/dogadjaji`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }});
+      const eventData = responseEvents.data;
+      setEvents(eventData.data);
+        console.log(responseEvents.data.data)
+        
+      /*const responseLocations = await axios.get('http://localhost:8000/api/lokacije');
       const locationData = responseLocations.data;
-      setLocations(locationData);
+      setLocations(locationData);*/
 
-      setLoading(false);
     } catch (error) {
       console.error('Greška prilikom dohvatanja događaja ili lokacija:', error);
+      
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchEvents();
-  }, [user]);
+  }, []);
 
   const handleDeleteEvent = async (id) => {
     try {
+      const token = getToken();
+      if (!token) {
+        alert('Korisnik nije pravilno prijavljen!');
+        return;}
       const confirmDelete = window.confirm('Da li ste sigurni da želite da obrišete ovaj događaj?');
       if (!confirmDelete) {
         return;
       }
       
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      };
   
-      await axios.delete(`http://localhost:8000/api/dogadjaji/${id}`, config);
+      await axios.delete(`http://localhost:8000/api/dogadjaji/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }});
       setEvents(events.filter((event) => event.id !== id));
       alert('Događaj je uspešno obrisan!');
     } catch (error) {
@@ -69,17 +88,16 @@ const Events = () => {
 
   const handleUpdateEvent = async (id) => {
     try {
-      const token = window.sessionStorage.getItem("TokenLogin");
+      const token = getToken();
       if (!token) {
         alert('Korisnik nije pravilno prijavljen!');
         return;
       }
   
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
+      if (user.id !== id) {
+        alert('Korisnik može menjati samo svoje događaje!');
+        return;
+      }
   
       const updatedEventData = {
         naziv: updatedEvent.naziv,
@@ -87,7 +105,11 @@ const Events = () => {
         datum: formattedDateForApi(new Date(updatedEvent.datum))
       };
   
-      const response = await axios.put(`http://localhost:8000/api/dogadjaji/${id}`, updatedEventData, config);
+      const response = await axios.put(`http://localhost:8000/api/dogadjaji/${id}`, updatedEventData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
   
       if (response.status === 200) {
         const updatedEvents = events.map(event => {
@@ -115,6 +137,7 @@ const Events = () => {
     }
   };
   
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUpdatedEvent({ ...updatedEvent, [name]: value || '' });
@@ -122,11 +145,16 @@ const Events = () => {
   
   const handleExportICS = async () => {
     try {
-      await axios.post('http://localhost:8000/export');
+      await axios.get('http://localhost:8000/export');
     } catch (error) {
       console.error('Greška prilikom eksportovanja .ics fajla:', error);
       alert('Došlo je do greške prilikom eksportovanja .ics fajla.');
     }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingEventId(null);
+    setUpdatedEvent({});
   };
 
   if (loading) {
@@ -137,10 +165,7 @@ const Events = () => {
     return <div>Nema sačuvanih događaja.</div>;
   }
 
-  if (!Array.isArray(events)) {
-    console.error('Podaci o događajima nisu u očekivanom formatu:', events);
-    return <div>Podaci o događajima nisu u očekivanom formatu.</div>;
-  }
+
 
   return (
     <div className='events-container'>
@@ -155,18 +180,20 @@ const Events = () => {
                 <input className='form-input' type='text' name='naziv' value={updatedEvent.naziv || event.naziv} onChange={handleInputChange} />
                 <input className='form-input' type='text' name='opis' value={updatedEvent.opis || event.opis} onChange={handleInputChange} />
                 <input className='form-input' type='date' name='datum' value={updatedEvent.datum || formatDate(new Date(event.datum))} onChange={handleInputChange} />
-                {/* Uklonjen select za lokaciju */}
-                <div className="form-buttons"><button onClick={() => handleUpdateEvent(event.id)}>Sačuvaj</button></div>
+
+                <div className="form-buttons"><button onClick={() => handleUpdateEvent(event.id)}>Sačuvaj</button>
+                <button onClick={() => handleCancelEdit()}>Odustani</button></div>
               </div>
             ) : (
               <div>
                 <div>Datum: {formatDate(new Date(event.datum))}</div>
                 <div>Naziv: {event.naziv}</div>
                 <div>Opis: {event.opis}</div>
-                {/* Lokacija se ne prikazuje */}
+                
                 <div className="form-buttons">
                   <button onClick={() => setEditingEventId(event.id)}>Izmeni</button>
                   <button onClick={() => handleDeleteEvent(event.id)}>Obriši</button>
+                  <button onClick={() => sendNotificationEmail(event.id)}>Pošalji notifikaciju na email</button>
                 </div>
               </div>
             )}

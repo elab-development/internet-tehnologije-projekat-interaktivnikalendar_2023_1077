@@ -1,4 +1,3 @@
-// Calendar.js
 import React, { useState } from 'react';
 import { GrCaretNext } from 'react-icons/gr';
 import { GrCaretPrevious } from 'react-icons/gr';

@@ -33,3 +33,25 @@ export const useAuthContext = () => {
 
   return context;
 };
+
+export const getUserObject = () => {
+  let userData = window.sessionStorage.getItem("userData")
+  if (!userData) {
+    return null;
+  }
+
+  let parsedData = JSON.parse(userData)
+  return parsedData
+}
+
+export const getUserField = (field) => {
+  let user = getUserObject()
+  if (user && field in user) {
+    return user[field]
+  }
+  return null
+};
+
+export const getToken = () => {
+  return getUserField("token")
+};

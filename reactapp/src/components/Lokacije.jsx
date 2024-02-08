@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocationContext } from './LocationContext';
+import { getToken } from './AuthContext';
 
 axios.interceptors.request.use(
   (config) => {
-    const token = window.sessionStorage.getItem("TokenLogin");
+    const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,7 +34,13 @@ const Lokacije = ({ onSelectLocation }) => {
 
   const fetchLokacije = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/lokacije');
+      const response = await axios.get('http://localhost:8000/api/lokacije?id=1',
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+      );
       const fetchedLocations = response.data.lokacije;
     fetchedLocations.forEach(location => addLocation(location));
     setLokacije(fetchedLocations);
@@ -61,7 +68,7 @@ const Lokacije = ({ onSelectLocation }) => {
     e.preventDefault(); 
    
     try {
-      const token = window.sessionStorage.getItem("TokenLogin");
+      const token = getToken();
   
       const response = await axios.post('http://localhost:8000/api/lokacije', novaLokacija, {
         headers: {
@@ -105,7 +112,7 @@ const Lokacije = ({ onSelectLocation }) => {
 
   const handleSacuvajIzmene = async () => {
     try {
-      const token = window.sessionStorage.getItem("TokenLogin");
+      const token = getToken();
   
       const response = await axios.put(`http://localhost:8000/api/lokacije/${izmenaLokacije.id}`, izmenaLokacije, {
         headers: {

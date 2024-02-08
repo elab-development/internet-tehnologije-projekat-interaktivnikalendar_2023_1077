@@ -1,7 +1,7 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 import { EventProvider } from './components/EventContext';
 import NavBar from './components/NavBar';
 import Calendar from './components/Calendar';
@@ -11,49 +11,33 @@ import Form from './components/Form';
 import UserList from './components/UserList';
 import UserProfile from './components/UserProfile';
 import Lokacije from './components/Lokacije';
-import { useAuthContext } from './components/AuthContext';
+import { useAuthContext, getToken } from './components/AuthContext';
 import { LocationProvider } from './components/LocationContext';
 
 function App() {
-  const [locations, setLocations] = React.useState([]);
   const { user, login } = useAuthContext();
   const handleDateClick = (date) => {
     console.log('Clicked on date:', date);
   };
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/users');
-        console.log('Fetched user role response:', response?.data);
-    
-        if (response.data && response.data.isAdmin !== undefined) {
-          console.log('Setting user data:', response.data);
-          login((prevUser) => ({ ...prevUser, isAdmin: response.data.isAdmin }));
-        } else {
-          console.error('Invalid user data received from server:', response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching user role:', error);
-      }
-    };
-    
   
-    if (user) {
-      fetchUserRole();
-    }
-  }, [user, login]);
-  
-
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [events, setEvents] = useState([]);
 
-  const handleLogin = (username) => {
-    setLoggedInUser(username);
+  const handleLogin = (userResponse) => {
+    let userData = userResponse.User
+    userData.token = userResponse.Token
+    setLoggedInUser(userData);
+
+    let sessionData = JSON.stringify(userData)
+    window.sessionStorage.setItem("userData", sessionData)
+    axios.defaults.headers.common['Authorization'] = `Bearer: ${getToken()}`
+    window.location.href="/"
   };
 
   const handleLogout = () => {
     setLoggedInUser(null);
+    window.sessionStorage.removeItem("userData");
+    axios.defaults.headers.common['Authorization'] = null
   };
 
   const handleAddEvent = (newEvent) => {
@@ -63,6 +47,12 @@ function App() {
       return updatedEvents;
     });
   };
+
+  let userData = window.sessionStorage.getItem("userData")
+  if (!loggedInUser && userData) {
+    setLoggedInUser(userData)
+    axios.defaults.headers.common['Authorization'] = `Bearer: ${getToken()}`
+  }
 
   return (
     <EventProvider>
@@ -81,11 +71,11 @@ function App() {
             }
           />
           <Route path="/calendar" element={<Calendar onDateClick={handleDateClick} />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/login" element={!loggedInUser ? (<Login />) : (<Navigate to="/" />)} />
           <Route path="/events" element={<Events events={events} />} />
           <Route path="/form" element={<Form onAddEvent={handleAddEvent} />} />
           <Route path="/users" element={<UserList />} />
-          <Route path="/lokacije" element={<Lokacije />} />
+          <Route path="/lokacije" element={loggedInUser ? (<Lokacije />) : ("")} />
           <Route path="/users/:userId" element={<UserProfile />} />
         </Routes>
       </div>

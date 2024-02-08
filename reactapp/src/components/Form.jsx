@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuthContext } from './AuthContext';
+import { getUserObject } from './AuthContext';
 import { useLocationContext } from './LocationContext';
 import { useEventContext } from '../components/EventContext';
 
 const Form = ({ date, onClose, isAdminProp, locations }) => {
-  const { user } = useAuthContext();
+  const { user } = getUserObject();
   const { addEvent } = useEventContext();
   const [eventTitle, setEventTitle] = useState('');
   const [eventDescription, setEventDescription] = useState('');
@@ -18,7 +18,7 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
 
   useEffect(() => {
     if (locations.length > 0) {
-      setEventLocation(locations[0].id || ''); // Postavljamo prvu lokaciju kao podrazumevanu, ili prazan string ako nema lokacija
+      setEventLocation(locations[0].id || '');
     }
   }, [locations]);
 
@@ -49,19 +49,19 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
         naziv: eventTitle,
         opis: eventDescription,
         datum: formattedDateForApi,
-        lokacija_id: eventLocation, // Postavljamo samo ID lokacije
+        lokacija_id: eventLocation, 
         user_id: user.id,
       };
   
       const response = await axios.post('http://localhost:8000/api/dogadjaji', newEvent);
   
       if (response.data && response.data[0] && response.data[0].includes('Uspešno kreiran novi dogadjaj')) {
-        // Ako je poruka o uspehu sadržana u odgovoru, prikaži je
+        
         alert(response.data[0]);
         addEvent(newEvent);
         onClose();
       } else {
-        // Ako nije, prikaži generičku poruku o grešci
+        
         alert('Došlo je do greške prilikom čuvanja događaja.');
       }
     } catch (error) {
@@ -78,7 +78,7 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
 
   const handleLocationChange = (e) => {
     const selectedLocationId = e.target.value;
-    setEventLocation(selectedLocationId); // Postavljamo ID lokacije umjesto cijelog objekta
+    setEventLocation(selectedLocationId); 
   };
 
   return (
