@@ -13,6 +13,8 @@ const formatDate = (date) => {
   return `${formattedDay}/${formattedMonth}/${year}`;
 };
 
+const formattedDateForApi = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,43 +40,63 @@ const Events = () => {
 
   const handleDeleteEvent = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/dogadjaji/${id}`);
+      const confirmDelete = window.confirm('Da li ste sigurni da želite da obrišete ovaj događaj?');
+      if (!confirmDelete) {
+        return;
+      }
+      
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}` // Dodajemo token autentifikacije
+        }
+      };
+  
+      await axios.delete(`http://localhost:8000/api/dogadjaji/${id}`, config);
       setEvents(events.filter((event) => event.id !== id));
-      alert('Dogadjaj je uspešno obrisan!');
+      alert('Događaj je uspešno obrisan!');
     } catch (error) {
       console.error('Greška prilikom brisanja događaja:', error);
-      alert('Došlo je do greške prilikom brisanja događaja.');
+      alert('Došlo je do greške prilikom brisanja događaja. Korisnik može da briše samo događaje koje je on napravio!');
     }
   };
   
-
-  const formatDateForApi = (dateString) => {
-    const [day, month, year] = dateString.split('/'); // Razdvajamo dan, mesec i godinu
-    return `${year}-${month}-${day}`; // Pravimo novi datum u formatu "yyyy-MM-dd"
-  };
   
-  // U funkciji handleUpdateEvent promenite datum pre slanja na server
+
   const handleUpdateEvent = async (id) => {
     try {
-      // Pre slanja datuma na server, promenite format datuma
+      if (!user || !user.id) {
+        alert('Korisnik nije pravilno prijavljen!');
+        return;
+      }
       const updatedEventWithFormattedDate = {
         ...updatedEvent,
-        datum: formatDateForApi(updatedEvent.datum)
+        datum: formattedDateForApi(new Date(updatedEvent.datum))
       };
       await axios.put(`http://localhost:8000/api/dogadjaji/${id}`, updatedEventWithFormattedDate);
       setEditingEventId(null);
       setUpdatedEvent({});
       fetchEvents();
-      alert('Dogadjaj je uspešno ažuriran!');
+      alert('Događaj je uspešno ažuriran!');
     } catch (error) {
       console.error('Greška prilikom izmene događaja:', error);
       alert('Došlo je do greške prilikom izmene događaja.');
     }
   };
-  
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUpdatedEvent({ ...updatedEvent, [name]: value });
+  };
+
+  // Funkcija za eksport .ics fajla
+  const handleExportICS = async () => {
+    try {
+      // Poziv API endpointa za eksport .ics fajla
+      await axios.post('http://localhost:8000/export');
+    } catch (error) {
+      console.error('Greška prilikom eksportovanja .ics fajla:', error);
+      alert('Došlo je do greške prilikom eksportovanja .ics fajla.');
+    }
   };
 
   if (loading) {
@@ -89,42 +111,44 @@ const Events = () => {
     console.error('Podaci o događajima nisu u očekivanom formatu:', events);
     return <div>Podaci o događajima nisu u očekivanom formatu.</div>;
   }
-  console.log(events);
+
   return (
     <div className='events-container'>
+      <div className="export-button">
+        <button onClick={handleExportICS}>Eksportuj .ics</button>
+      </div>
       <ul>
         {events.map((event) => (
           <li key={event.id} style={{ marginBottom: '5px' }}>
-            {editingEventId === event.id ? ( // Ako se trenutno uređuje ovaj događaj, prikaži input polja za izmenu
+            {editingEventId === event.id ? (
               <div>
-                <input
+                <input  className='form-input'
                   type='text'
                   name='naziv'
                   value={updatedEvent.naziv || event.naziv}
                   onChange={handleInputChange}
                 />
-                <input
+                <input  className='form-input'
                   type='text'
                   name='opis'
                   value={updatedEvent.opis || event.opis}
                   onChange={handleInputChange}
                 />
-                <input
+                <input className='form-input'
                   type='date'
                   name='datum'
                   value={updatedEvent.datum || formatDate(new Date(event.datum))}
                   onChange={handleInputChange}
                 />
-                <button onClick={() => handleUpdateEvent(event.id)}>Sačuvaj</button>
+                <div className="form-buttons"><button onClick={() => handleUpdateEvent(event.id)}>Sačuvaj</button></div>
               </div>
             ) : (
-              // Inače prikaži informacije o događaju
               <div>
                 <div>Datum: {formatDate(new Date(event.datum))}</div>
                 <div>Naziv: {event.naziv}</div>
                 <div>Opis: {event.opis}</div>
                 <div>Lokacija: {event.lokacija_id.naziv}</div>
-                <div>
+                <div className="form-buttons">
                   <button onClick={() => setEditingEventId(event.id)}>Izmeni</button>
                   <button onClick={() => handleDeleteEvent(event.id)}>Obriši</button>
                 </div>
