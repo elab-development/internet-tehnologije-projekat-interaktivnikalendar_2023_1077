@@ -42,7 +42,7 @@ const Lokacije = ({ onSelectLocation }) => {
       }
       );
       const fetchedLocations = response.data.lokacije;
-    fetchedLocations.forEach(location => addLocation(location));
+      fetchedLocations.forEach(location => addLocation(location));
     setLokacije(fetchedLocations);
     } catch (error) {
       console.error('Greška prilikom dohvatanja lokacija:', error);
