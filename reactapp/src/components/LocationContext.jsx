@@ -16,7 +16,6 @@ export const LocationProvider = ({ children }) => {
   const addLocation = (location) => {
     setLocations((prevLocations) => [...prevLocations, location]);
   };
-  console.log("Locations inside LocationProvider:", locations);
   return (
     <LocationContext.Provider value={{ locations, addLocation }}>
       {children}
