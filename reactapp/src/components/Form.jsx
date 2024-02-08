@@ -1,10 +1,13 @@
+// Form.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthContext } from './AuthContext';
-import { EventProvider, useEventContext } from '../components/EventContext';
+import { useLocationContext } from './LocationContext';
+import { useEventContext } from '../components/EventContext';
 
-const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
+const Form = ({ date, onClose, isAdminProp, locations}) => {
   const { user } = useAuthContext();
+ // const { locations, addLocation } = useLocationContext(); 
   const { addEvent } = useEventContext();
   const [eventTitle, setEventTitle] = useState('');
   const [eventTime, setEventTime] = useState('');
@@ -18,16 +21,21 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   const [eventCountry, setEventCountry] = useState('');
   const [eventPostalCode, setEventPostalCode] = useState('');
 
-
   const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
   useEffect(() => {
     setIsAdmin((user && user.isAdmin) || isAdminProp);
   }, [isAdminProp, user && user.isAdmin]);
-  
+
   useEffect(() => {
-    setExistingLocation(existingLocations && existingLocations.find(loc => loc.naziv === eventLocation));
-  }, [existingLocations, eventLocation]);
+    if (locations.length > 0) {
+      setEventLocation(locations[0].naziv);
+    }
+  }, [locations]);
+
+  useEffect(() => {
+    setExistingLocation(locations.find(loc => loc.naziv === eventLocation)); 
+  }, [locations, eventLocation]);
 
   const formatDate = (date) => {
     const day = date.getDate();
@@ -41,10 +49,9 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
   };
 
   const handleSave = async () => {
-    console.log('isAdmin is true:', isAdmin);
     try {
       let locationAdded = false;
-  
+
       if (isAdmin) {
         const responseLocation = await axios.post('http://localhost:8000/api/lokacije', {
           naziv: eventLocation,
@@ -53,7 +60,7 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
           drzava: eventCountry,
           poštanski_kod: eventPostalCode,
         });
-  
+
         if (responseLocation.data.success) {
           locationAdded = true;
           const newEvent = {
@@ -66,14 +73,13 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
           };
           addEvent(newEvent);
           onClose();
-          console.log(isAdmin);
           alert('Događaj je sačuvan!');
         } else {
           alert('Greška prilikom kreiranja/izmene lokacije!');
         }
       } else {
-        const existingLocation = existingLocations.find(loc => loc.naziv === eventLocation);
-  
+        const existingLocation = locations.find(loc => loc.naziv === eventLocation);
+
         if (existingLocation) {
           const newEvent = {
             date,
@@ -83,9 +89,9 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
             location: eventLocation,
             selectedEvent,
           };
-  
+
           await axios.post('http://localhost:8000/api/dogadjaji', newEvent);
-  
+
           addEvent(newEvent);
           onClose();
           alert('Događaj je sačuvan!');
@@ -98,47 +104,11 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
       alert('Greška prilikom komunikacije sa serverom');
     }
   };
-  
-
-  const handleUpdateLocation = async () => {
-    try {
-      const token = window.sessionStorage.getItem("TokenLogin");
-      
-      if (!existingLocation) {
-        throw new Error('Existing location is not defined');
-      }
-  
-      const responseUpdate = await axios.put(`http://localhost:8000/api/lokacije/${existingLocation.id}`, {
-        naziv: eventLocation,
-        adresa: eventAddress,
-        grad: eventCity,
-        drzava: eventCountry,
-        poštanski_kod: eventPostalCode,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-  
-      if (responseUpdate.data.success) {
-        alert('Uspešno ažurirana lokacija!');
-      } else {
-        alert('Greška prilikom ažuriranja lokacije!');
-      }
-    } catch (error) {
-      console.error('Error updating location:', error);
-      alert('Greška prilikom komunikacije sa serverom');
-    }
-  };
-  
-
-  
-
 
   const handleCancel = () => {
     onClose();
   };
-
+  console.log("Lokacije su ", locations);
   return (
     <div className="form-container">
       <h3>Dodaj događaj na dan {formatDate(date)}</h3>
@@ -157,9 +127,15 @@ const Form = ({ date, onClose, isAdminProp, existingLocations }) => {
       <br/>
       <div>
         <label>Lokacija:</label>
-        <br/>
-        <input className='form-input' type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
+        <br />
+        <select value={eventLocation} onChange={(e) => setEventLocation(e.target.value)}>
+          <option value="">Izaberite lokaciju...</option>
+          {locations.map((location, index) => ( // Promijenjeno
+            <option key={index} value={location.naziv}>{location.naziv}</option> // Promijenjeno
+          ))}
+        </select>
       </div>
+
       {/*forma za sve korisnike */}
       <br/>
       <div className="form-buttons">

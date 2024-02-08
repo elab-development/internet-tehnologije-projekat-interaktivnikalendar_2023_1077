@@ -12,8 +12,10 @@ import UserList from './components/UserList';
 import UserProfile from './components/UserProfile';
 import Lokacije from './components/Lokacije';
 import { useAuthContext } from './components/AuthContext';
+import { LocationProvider } from './components/LocationContext';
 
 function App() {
+  const [locations, setLocations] = React.useState([]);
   const { user, login } = useAuthContext();
   const handleDateClick = (date) => {
     console.log('Clicked on date:', date);
@@ -64,6 +66,7 @@ function App() {
 
   return (
     <EventProvider>
+       <LocationProvider>
       <div className="App">
         <NavBar loggedInUser={loggedInUser} onLogout={handleLogout} />
         <Routes>
@@ -86,6 +89,7 @@ function App() {
           <Route path="/users/:userId" element={<UserProfile />} />
         </Routes>
       </div>
+      </LocationProvider>
     </EventProvider>
   );
 }

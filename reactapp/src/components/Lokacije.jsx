@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocationContext } from './LocationContext';
 
 axios.interceptors.request.use(
   (config) => {
@@ -14,7 +15,8 @@ axios.interceptors.request.use(
   }
 );
 
-const Lokacije = () => {
+const Lokacije = ({ onSelectLocation }) => {
+  const { locations, addLocation} = useLocationContext();
   const [lokacije, setLokacije] = useState([]);
   const [novaLokacija, setNovaLokacija] = useState({
     naziv: '',
@@ -32,7 +34,9 @@ const Lokacije = () => {
   const fetchLokacije = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/lokacije');
-      setLokacije(response.data.lokacije);
+      const fetchedLocations = response.data.lokacije;
+    fetchedLocations.forEach(location => addLocation(location));
+    setLokacije(fetchedLocations);
     } catch (error) {
       console.error('Greška prilikom dohvatanja lokacija:', error);
     }
@@ -55,7 +59,7 @@ const Lokacije = () => {
 
   const handleAddLocation = async (e) => {
     e.preventDefault(); 
-
+   
     try {
       const token = window.sessionStorage.getItem("TokenLogin");
   
@@ -69,6 +73,7 @@ const Lokacije = () => {
       if (response.status === 200) {
         alert('Uspešno dodata nova lokacija!');
         fetchLokacije();
+        addLocation(novaLokacija);
         setNovaLokacija({
           naziv: '',
           adresa: '',

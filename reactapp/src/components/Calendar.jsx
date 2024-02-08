@@ -1,13 +1,17 @@
+// Calendar.js
 import React, { useState } from 'react';
 import { GrCaretNext } from 'react-icons/gr';
 import { GrCaretPrevious } from 'react-icons/gr';
 import Form from './Form';
+import { LocationProvider, useLocationContext } from './LocationContext';
 
 const Calendar = ({ onDateClick }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [events, setEvents] = useState([]);
+
+  const { locations } = useLocationContext();
 
   const daysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -64,52 +68,54 @@ const Calendar = ({ onDateClick }) => {
     setSelectedDate(null);
   };
 
-  
-
   const monthData = getMonthData();
-
+//console.log("Lokacije su ", locations);
   return (
-    <div className="container">
-      <div className="header">
-        <button className='cal-buttons' onClick={prevMonth}><GrCaretPrevious /></button>
-        <h2>{currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
-        <button className='cal-buttons' onClick={nextMonth}><GrCaretNext /></button>
-      </div>
-      <table className="calendar">
-        <thead>
-          <tr>
-            {['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'].map((day, index) => (
-              <th key={index}>{day}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {monthData.map((week, weekIndex) => (
-            <tr key={weekIndex}>
-              {week.map((date, dateIndex) => (
-                <td
-                  key={dateIndex}
-                  className={date ? (selectedDate && date.getTime() === selectedDate.getTime() ? 'selected-date' : '') : 'empty'}
-                  onClick={() => date && handleDateClick(date)}
-                >
-                  {date ? (
-                    <div>
-                      <span>{date.getDate()}</span>
-                      
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </td>
+    <LocationProvider>
+      <div className="container">
+        <div className="header">
+          <button className='cal-buttons' onClick={prevMonth}><GrCaretPrevious /></button>
+          <h2>{currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
+          <button className='cal-buttons' onClick={nextMonth}><GrCaretNext /></button>
+        </div>
+        <table className="calendar">
+          <thead>
+            <tr>
+              {['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'].map((day, index) => (
+                <th key={index}>{day}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-      {showForm && (
-        <Form date={selectedDate} onClose={closeForm} onAddEvent={addEvent} />
-      )}
-    </div>
+          </thead>
+          <tbody>
+            {monthData.map((week, weekIndex) => (
+              <tr key={weekIndex}>
+                {week.map((date, dateIndex) => (
+                  <td
+                    key={dateIndex}
+                    className={date ? (selectedDate && date.getTime() === selectedDate.getTime() ? 'selected-date' : '') : 'empty'}
+                    onClick={() => date && handleDateClick(date)}
+                  >
+                    {date ? (
+                      <div>
+                        <span>{date.getDate()}</span>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        
+        {showForm && (
+         <Form date={selectedDate} onClose={closeForm} isAdminProp={false} locations={locations} />
+
+        )}
+        
+      </div>
+    </LocationProvider>
   );
 };
 
