@@ -45,7 +45,7 @@ const Events = () => {
       const eventData = responseEvents.data;
       setEvents(eventData.data);
         console.log(responseEvents.data.data)
-        
+
       /*const responseLocations = await axios.get('http://localhost:8000/api/lokacije');
       const locationData = responseLocations.data;
       setLocations(locationData);*/
@@ -166,7 +166,7 @@ const Events = () => {
   }
 
 
-
+console.log(events)
   return (
     <div className='events-container'>
       <div className="form-buttons">
@@ -189,6 +189,8 @@ const Events = () => {
                 <div>Datum: {formatDate(new Date(event.datum))}</div>
                 <div>Naziv: {event.naziv}</div>
                 <div>Opis: {event.opis}</div>
+                <div>Naziv lokacije: {event.lokacija_id.naziv}</div>
+                <div>Kreirao korisnik: {event.user_id.name}</div>
                 
                 <div className="form-buttons">
                   <button onClick={() => setEditingEventId(event.id)}>Izmeni</button>

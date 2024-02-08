@@ -93,7 +93,7 @@ const Lokacije = ({ onSelectLocation }) => {
       }
     } catch (error) {
       console.error('Greška prilikom komunikacije sa serverom:', error);
-      alert('Greška prilikom komunikacije sa serverom');
+      alert('Greška prilikom komunikacije sa serverom. Samo admin moze da doda, izmeni i briše lokacije.');
     }
   };
 

@@ -11,6 +11,8 @@ const Form = ({ date, onClose, isAdminProp, locations }) => {
   const [eventDescription, setEventDescription] = useState('');
   const [eventLocation, setEventLocation] = useState('');
   const user = getUserObject();
+
+
  // const [isAdmin, setIsAdmin] = useState((user && user.isAdmin) || isAdminProp);
 
  /* useEffect(() => {
