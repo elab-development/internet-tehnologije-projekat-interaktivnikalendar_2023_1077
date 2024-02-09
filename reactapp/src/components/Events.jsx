@@ -205,6 +205,7 @@ console.log(events)
                 <div>Opis: {event.opis}</div>
                 <div>Naziv lokacije: {event.lokacija_id.naziv}</div>
                 <div>Kreirao korisnik: {event.user_id.name}</div>
+                <div><a className="btn" href={`https://calendar.google.com/calendar/u/0/r/eventedit?text=${window.encodeURIComponent(event.naziv)}&location=${window.encodeURIComponent(event.lokacija_id.naziv)}&details=${window.encodeURIComponent(event.opis)}&dates=${window.encodeURIComponent(event.datum)}`}>Dodaj u Google kalendar</a></div>
                 
                 <div className="form-buttons">
                   <button onClick={() => setEditingEventId(event.id)}>Izmeni</button>
