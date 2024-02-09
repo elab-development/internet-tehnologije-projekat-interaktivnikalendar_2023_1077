@@ -101,15 +101,17 @@ const Events = () => {
     }
   };
 
-  const handleUpdateEvent = async (id) => {
+  const handleUpdateEvent = async (d) => {
+    //const user = getUserObject();
     try {
       const token = getToken();
       if (!token) {
         alert('Korisnik nije pravilno prijavljen!');
         return;
       }
-  
-      if (user.id !== id) {
+      console.log(user.id)
+      console.log(d)
+      if (user.id !== d.user_id.id) {
         alert('Korisnik može menjati samo svoje događaje!');
         return;
       }
@@ -120,7 +122,7 @@ const Events = () => {
         datum: formattedDateForApi(new Date(updatedEvent.datum))
       };
   
-      const response = await axios.put(`http://localhost:8000/api/dogadjaji/${id}`, updatedEventData, {
+      const response = await axios.put(`http://localhost:8000/api/dogadjaji/${d.id}`, updatedEventData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -128,7 +130,7 @@ const Events = () => {
   
       if (response.status === 200) {
         const updatedEvents = events.map(event => {
-          if (event.id === id) {
+          if (event.id === d.id) {
             return {
               ...event,
               naziv: updatedEventData.naziv,
@@ -210,7 +212,7 @@ const Events = () => {
                 <input className='form-input' type='text' name='opis' value={updatedEvent.opis || event.opis} onChange={handleInputChange} />
                 <input className='form-input' type='date' name='datum' value={updatedEvent.datum || formatDate(new Date(event.datum))} onChange={handleInputChange} />
 
-                <div className="form-buttons"><button onClick={() => handleUpdateEvent(event.id)}>Sačuvaj</button>
+                <div className="form-buttons"><button onClick={() => handleUpdateEvent(event)}>Sačuvaj</button>
                 <button onClick={() => handleCancelEdit()}>Odustani</button></div>
               </div>
             ) : (
