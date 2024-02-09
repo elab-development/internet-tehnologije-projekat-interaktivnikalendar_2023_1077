@@ -19,7 +19,7 @@ const UserList = () => {
   }, []);
 
   return (
-    <div>
+    <div className="users-container">
       <h2>Lista korisnika</h2>
       <ul>
         {users.map((user) => (

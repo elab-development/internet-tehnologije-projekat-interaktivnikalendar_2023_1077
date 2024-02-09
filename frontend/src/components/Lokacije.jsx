@@ -134,49 +134,50 @@ const Lokacije = ({ onSelectLocation }) => {
   };
 
   return (
-    <div>
-      <h2>Lokacije</h2>
-      <div>
-        <h3>Dodaj lokaciju</h3>
-        <form onSubmit={handleAddLocation}>
-          <input type="text" className='form-input' name="naziv" value={novaLokacija.naziv} onChange={handleInputChange} placeholder="Naziv" />
-          <input type="text" className='form-input' name="adresa" value={novaLokacija.adresa} onChange={handleInputChange} placeholder="Adresa" />
-          <input type="text" className='form-input' name="grad" value={novaLokacija.grad} onChange={handleInputChange} placeholder="Grad" />
-          <input type="text" className='form-input' name="drzava" value={novaLokacija.drzava} onChange={handleInputChange} placeholder="Država" />
-          <input type="text" className='form-input' name="poštanski_kod" value={novaLokacija.poštanski_kod} onChange={handleInputChange} placeholder="Poštanski kod" />
-          <div className="form-buttons"><button type="submit">Dodaj</button></div>
-        </form>
-      </div>
-      <ul>
-        {lokacije.map((lokacija) => (
-          <li key={lokacija.id}>
-            <p>Naziv: {lokacija.naziv}</p>
-            <p>Adresa: {lokacija.adresa}</p>
-            <p>Grad: {lokacija.grad}</p>
-            <p>Država: {lokacija.drzava}</p>
-            <p>Poštanski kod: {lokacija.poštanski_kod}</p>
-            {izmenaLokacije && izmenaLokacije.id === lokacija.id ? (
-              <div>
-                <input type="text" className='form-input' name="naziv" value={izmenaLokacije.naziv} onChange={handleInputChange} placeholder="Naziv" />
-                <input type="text" className='form-input' name="adresa" value={izmenaLokacije.adresa} onChange={handleInputChange} placeholder="Adresa" />
-                <input type="text" className='form-input' name="grad" value={izmenaLokacije.grad} onChange={handleInputChange} placeholder="Grad" />
-                <input type="text" className='form-input' name="drzava" value={izmenaLokacije.drzava} onChange={handleInputChange} placeholder="Država" />
-                <input type="text" className='form-input' name="poštanski_kod" value={izmenaLokacije.poštanski_kod} onChange={handleInputChange} placeholder="Poštanski kod" />
-                <div className="form-buttons">
-                  <button onClick={handleSacuvajIzmene}>Sačuvaj izmene</button>
-                  <button onClick={() => setIzmenaLokacije(null)}>Odustani</button>
-                </div>
-              </div>
-            ) : (
-              <div className="form-buttons">
-                <button onClick={() => handleIzmeniLokaciju(lokacija)}>Izmeni</button>
-                <button onClick={() => handleIzbrisiLokaciju(lokacija.id)}>Izbriši</button>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div class="location-container">
+  <h2>Lokacije</h2>
+  <div class="add-location-container">
+    <h3>Dodaj lokaciju</h3>
+    <form onSubmit={handleAddLocation}>
+      <input type="text" name="naziv" value={novaLokacija.naziv} onChange={handleInputChange} placeholder="Naziv" />
+      <input type="text" name="adresa" value={novaLokacija.adresa} onChange={handleInputChange} placeholder="Adresa" />
+      <input type="text" name="grad" value={novaLokacija.grad} onChange={handleInputChange} placeholder="Grad" />
+      <input type="text" name="drzava" value={novaLokacija.drzava} onChange={handleInputChange} placeholder="Država" />
+      <input type="text" name="poštanski_kod" value={novaLokacija.poštanski_kod} onChange={handleInputChange} placeholder="Poštanski kod" />
+      <div><button type="submit">Dodaj</button></div>
+    </form>
+  </div>
+  <ul class="location-list">
+    {lokacije.map((lokacija) => (
+    <li key={lokacija.id}>
+      <p>Naziv: {lokacija.naziv}</p>
+      <p>Adresa: {lokacija.adresa}</p>
+      <p>Grad: {lokacija.grad}</p>
+      <p>Država: {lokacija.drzava}</p>
+      <p>Poštanski kod: {lokacija.poštanski_kod}</p>
+      {izmenaLokacije && izmenaLokacije.id === lokacija.id ? (
+        <div className="edit-location-form">
+          <input type="text" name="naziv" value={izmenaLokacije.naziv} onChange={handleInputChange} placeholder="Naziv" />
+          <input type="text" name="adresa" value={izmenaLokacije.adresa} onChange={handleInputChange} placeholder="Adresa" />
+          <input type="text" name="grad" value={izmenaLokacije.grad} onChange={handleInputChange} placeholder="Grad" />
+          <input type="text" name="drzava" value={izmenaLokacije.drzava} onChange={handleInputChange} placeholder="Država" />
+          <input type="text" name="poštanski_kod" value={izmenaLokacije.poštanski_kod} onChange={handleInputChange} placeholder="Poštanski kod" />
+          <div>
+            <button onClick={handleSacuvajIzmene}>Sačuvaj izmene</button>
+            <button onClick={() => setIzmenaLokacije(null)}>Odustani</button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <button onClick={() => handleIzmeniLokaciju(lokacija)}>Izmeni</button>
+          <button onClick={() => handleIzbrisiLokaciju(lokacija.id)}>Izbriši</button>
+        </div>
+      )}
+    </li>
+    ))}
+  </ul>
+</div>
+
   );
 };
 

@@ -14,7 +14,7 @@ function NavBar({ loggedInUser, onLogout, isAdmin}) {
       )}
 
       {loggedInUser && (
-        <button className='login-button' onClick={onLogout}>Odjavi se</button>
+        <button onClick={onLogout}>Odjavi se</button>
       )}
       {!loggedInUser && (
         <Link to="/">Login</Link>

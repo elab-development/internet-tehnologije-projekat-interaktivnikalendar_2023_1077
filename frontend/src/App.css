@@ -1,15 +1,41 @@
+/* Ažurirani stilovi za navigaciju */
 .navBar {
+  background-color: #282c34;
+  color: #fff;
+  padding: 20px;
   display: flex;
-  flex-direction: row;
-  background-color: rgb(211, 211, 211);
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: rgb(175, 175, 175);
+  justify-content: space-between;
   align-items: center;
-  min-height: 40px;
-  padding-left: 25px;
-  font-size: large;
-  }
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.navBar a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px;
+  transition: color 0.3s;
+  flex: 1; /* Ravnomerno raspoređuje linkove */
+}
+
+.navBar a:hover {
+  color: #61dafb; /* Promenjena boja prilikom prelaska preko linka */
+}
+
+.navBar button {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 20px;
+}
+
+.navBar button:hover {
+  background-color: #61dafb; /* Promenjena boja prilikom prelaska preko dugmeta */
+  color: #fff;
+}
 
   
 .btn {
@@ -89,14 +115,64 @@ body {
   padding: 0;
 }
 
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.login-input {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  font-size: 16px;
+}
+
+.login-input:hover,
+.login-input:focus {
+  border-color: #61dafb;
+}
+
 .login-button {
+  width: 100%;
   background-color: #282c34;
   color: #fff;
-  padding: 15px 30px; 
+  padding: 15px;
   cursor: pointer;
   border: none;
-  border-radius: 15px; 
+  border-radius: 15px;
   transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #61dafb;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.login-form button,
+.login-form p {
+  margin-top: 10px;
+}
+
+.login-form p {
+  font-size: 14px;
+}
+
+.login-form p:hover {
+  background-color: #61dafb;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .login-button:hover {
@@ -109,20 +185,8 @@ body {
   margin-top: 20px;
 }
 
-.form-buttons button {
-  background-color: #282c34;
-  color: #fff;
-  padding: 15px 30px;
-  cursor: pointer;
-  border: none;
-  border-radius: 15px;
-  transition: background-color 0.3s, transform 0.3s;
-}
 
-.form-buttons button:hover {
-  background-color: #61dafb;
-  transform: scale(1.05); 
-}
+
 .container {
   margin-bottom: 20px;
   background-color: #ffffff;
@@ -135,9 +199,48 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 
-
 .container:hover {
-  transform: scale(1.05);
+  transform: scale(1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.cal-buttons {
+  background-color: #61dafb; /* Promenjena boja dugmadi */
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px; 
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 20px; /* Prilagođen padding */
+  transition: background-color 0.3s;
+}
+
+.cal-buttons:hover {
+  background-color: #61dafb;
+}
+.calendar {
+  display: inline-block;
+}
+
+.selected-date {
+  background-color: #4caf50;
+  color: #fff;
+  border-radius: 40%;
+  padding: 2px 3px;
+  font-weight: bold; 
+  cursor: pointer; 
+}
+
+.selected-date:hover {
+  transform: none;
 }
 @media screen and (max-width: 768px) {
   .container {
@@ -221,39 +324,361 @@ h2 {
   margin: 20px auto; 
   transition: transform 0.3s ease-in-out;
 }
+/* Ažurirani stilovi za formu */
+/* Ažurirani stilovi za formu */
 .form-container {
-  max-width: 500px;
+  max-width: 400px;
   margin: 0 auto;
   padding: 30px;
-  background-color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9; /* Promenjena boja pozadine forme */
   border-radius: 10px;
-  text-align:center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
+
+.form-container h3 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
 .form-input {
   width: 100%;
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-.form-textarea {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-.form-input {
-  margin-bottom: 20px;
-  padding: 12px;
+  padding: 10px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   box-sizing: border-box;
-  transition: border-color 0.3s;
-  font-size: 16px;
+  font-size: 14px;
 }
-.form-input:hover,
-.form-input:focus {
-  border-color: #61dafb;
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.form-buttons button {
+  background-color: #282c34; /* Boja dugmadi */
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.form-buttons button:hover {
+  background-color: #61dafb;
+}
+
+.users-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.users-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.users-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.users-container li {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.users-container li:last-child {
+  border-bottom: none;
+}
+
+.users-container li strong {
+  color: #333;
+}
+
+.users-container li a {
+  color: #007bff;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.users-container li a:hover {
+  text-decoration: underline;
+}
+
+.user-profile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.user-profile-container p {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.user-profile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.user-profile-container p {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.user-profile-container p:last-child {
+  margin-bottom: 0;
+}
+.events-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.export-button {
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+.export-button button {
+  background-color: #282c34; /* Boja dugmadi */
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.export-button button:hover {
+  background-color: #61dafb;
+}
+
+.event-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.edit-event-form button,
+.button-container button {
+  background-color: #282c34; /* Boja dugmadi */
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.edit-event-form button:hover,
+.button-container button:hover {
+  background-color: #61dafb;
+}
+
+.event-details div {
+  margin-bottom: 5px;
+}
+
+.event-details .button-container {
+  margin-top: 10px;
+}
+
+.event-details .button-container button {
+  background-color: #282c34; /* Boja dugmadi */
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.event-details .button-container button:hover {
+  background-color: #61dafb;
+}
+.edit-event-form {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-event-form input[type='text'],
+.edit-event-form input[type='date'] {
+  width: calc(100% - 42px); /* Dodajem malu marginu sleva */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.edit-event-form button {
+  background-color: #282c34; /* Boja dugmadi */
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.edit-event-form button:hover {
+  background-color: #61dafb;
+}
+.location-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.location-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.add-location-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-location-container h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.add-location-container form input[type='text'] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.add-location-container form button[type='submit'] {
+  background-color: #282c34;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 20px;
+}
+
+.add-location-container form button[type='submit']:hover {
+  background-color: #61dafb;
+}
+
+.location-list {
+  list-style: none;
+  padding: 0;
+}
+
+.location-list li {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.location-list li p {
+  margin-bottom: 10px;
+}
+
+.location-list li button {
+  background-color: #282c34; /* Boja dugmadi */
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.location-list li button:hover {
+  background-color: #61dafb;
+}
+
+.edit-location-form input[type='text'] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.edit-location-form div {
+  margin-top: 10px; /* Dodatni razmak između input polja i dugmadi */
 }
