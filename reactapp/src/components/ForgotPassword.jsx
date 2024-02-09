@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { getUserObject, getToken } from './AuthContext';
 
 const ForgotPassword = ({ onCancel }) => {
   const [email, setEmail] = useState('');
@@ -7,10 +8,14 @@ const ForgotPassword = ({ onCancel }) => {
 
   const handleResetPassword = (e) => {
     e.preventDefault();
+    const token = getToken();
     axios.post("http://127.0.0.1:8000/api/resetPassword", {
       email,
       new_password: newPassword, 
-    })
+    },  {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }})
     .then((response) => {
       console.log(response.data);
       if (onCancel) {
