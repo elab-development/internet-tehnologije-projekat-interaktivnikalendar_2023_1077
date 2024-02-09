@@ -4,9 +4,13 @@ import { getUserObject, getToken } from './AuthContext';
 
 const sendNotificationEmail = async (eventId) => {
   try {
-    const response = await axios.post('http://localhost:8000/send-email', {
+    const token = getToken();
+    const response = await axios.post('http://localhost:8000/api/send-email', {
       eventId: eventId,
-    });
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }});
     alert('Notifikacija je uspešno poslata na vašu email adresu!');
   } catch (error) {
     console.error('Greška prilikom slanja notifikacije na email:', error);
@@ -23,6 +27,17 @@ const formatDate = (date) => {
   const formattedMonth = month < 10 ? `0${month}` : month;
 
   return `${formattedDay}/${formattedMonth}/${year}`;
+};
+
+const formatDateGoogle = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+
+  return `${year}${formattedMonth}${formattedDay}/${year}${formattedMonth}${formattedDay}`;
 };
 
 const formattedDateForApi = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
@@ -180,7 +195,7 @@ const Events = () => {
   }
 
 
-console.log(events)
+
   return (
     <div className='events-container'>
       <div className="form-buttons">
@@ -205,7 +220,7 @@ console.log(events)
                 <div>Opis: {event.opis}</div>
                 <div>Naziv lokacije: {event.lokacija_id.naziv}</div>
                 <div>Kreirao korisnik: {event.user_id.name}</div>
-                <div><a className="btn" href={`https://calendar.google.com/calendar/u/0/r/eventedit?text=${window.encodeURIComponent(event.naziv)}&location=${window.encodeURIComponent(event.lokacija_id.naziv)}&details=${window.encodeURIComponent(event.opis)}&dates=${window.encodeURIComponent(event.datum)}`}>Dodaj u Google kalendar</a></div>
+                <div><a className="btn" target="_blank" href={`https://calendar.google.com/calendar/u/0/r/eventedit?text=${window.encodeURIComponent(event.naziv)}&location=${window.encodeURIComponent(event.lokacija_id.naziv)}&details=${window.encodeURIComponent(event.opis)}&dates=${window.encodeURIComponent(formatDateGoogle(new Date(event.datum)))}`}>Dodaj u Google kalendar</a></div>
                 
                 <div className="form-buttons">
                   <button onClick={() => setEditingEventId(event.id)}>Izmeni</button>
