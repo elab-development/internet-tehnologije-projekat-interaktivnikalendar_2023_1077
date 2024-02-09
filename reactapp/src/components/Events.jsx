@@ -145,7 +145,21 @@ const Events = () => {
   
   const handleExportICS = async () => {
     try {
-      await axios.get('http://localhost:8000/export');
+      axios.get('http://localhost:8000/api/export', {responseType: 'blob'}).then(r => {
+        // create file link in browser's memory
+        const href = URL.createObjectURL(r.data);
+
+        // create "a" HTML element with href to file & click
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', 'calendar.ics');
+        document.body.appendChild(link);
+        link.click();
+
+        // clean up "a" element & remove ObjectURL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+      });
     } catch (error) {
       console.error('Greška prilikom eksportovanja .ics fajla:', error);
       alert('Došlo je do greške prilikom eksportovanja .ics fajla.');

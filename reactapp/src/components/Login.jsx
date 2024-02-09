@@ -15,7 +15,6 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     axios.post("http://127.0.0.1:8000/api/login", { email, password })
       .then((res) => {
-        console.log("heej ovde sam !!!")
         console.log(res)
         if (res.data.success === true) {
           alert("Uspešno prijavljivanje");
